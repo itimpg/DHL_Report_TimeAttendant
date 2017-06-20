@@ -1,20 +1,63 @@
-﻿using System;
+﻿using GalaSoft.MvvmLight;
+using System;
 
 namespace DHL.Report.TimeAttendance.Models
 {
-    public class ConfigModel
+    public class ConfigModel : ObservableObject
     {
+        private Shift _morningShift;
         public Shift MorningShift { get; set; }
-        public Shift EveningShift { get; set; }
-        public Shift NightShift { get; set; }
-        public Shift MorningShiftWithOT { get; set; }
-        public Shift NightShiftWithOT { get; set; }
+
+        private Shift _eveningShift;
+        public Shift EveningShift
+        {
+            get { return _eveningShift; }
+            set { Set(() => EveningShift, ref _eveningShift, value); }
+        }
+
+        private Shift _nightShift;
+        public Shift NightShift
+        {
+            get { return _nightShift; }
+            set { Set(() => NightShift, ref _nightShift, value); }
+        }
+
+        private Shift _morningShiftWithOT;
+        public Shift MorningShiftWithOT
+        {
+            get { return _morningShiftWithOT; }
+            set { Set(() => MorningShiftWithOT, ref _morningShiftWithOT, value); }
+        }
+
+        private Shift _nightShiftWithOT;
+        public Shift NightShiftWithOT
+        {
+            get { return _nightShiftWithOT; }
+            set { Set(() => NightShiftWithOT, ref _nightShiftWithOT, value); }
+        }
     }
 
-    public class Shift
+    public class Shift : ObservableObject
     {
-        public string Name { get; set; }
-        public TimeSpan From { get; set; }
-        public TimeSpan To { get; set; }
+        private string _name;
+        public string Name
+        {
+            get { return _name; }
+            set { Set(() => Name, ref _name, value); }
+        }
+
+        private TimeSpan _from;
+        public TimeSpan From
+        {
+            get { return _from; }
+            set { Set(() => From, ref _from, value); }
+        }
+
+        private TimeSpan _to;
+        public TimeSpan To
+        {
+            get { return _to; }
+            set { Set(() => To, ref _to, value); }
+        }
     }
 }

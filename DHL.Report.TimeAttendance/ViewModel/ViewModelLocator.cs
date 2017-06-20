@@ -39,6 +39,7 @@ namespace DHL.Report.TimeAttendance.ViewModel
             SimpleIoc.Default.Register<IReportManager, ReportManager>();
 
             SimpleIoc.Default.Register<MainViewModel>();
+            SimpleIoc.Default.Register<SettingViewModel>();
         }
 
         public MainViewModel Main
@@ -46,6 +47,14 @@ namespace DHL.Report.TimeAttendance.ViewModel
             get
             {
                 return ServiceLocator.Current.GetInstance<MainViewModel>();
+            }
+        }
+
+        public SettingViewModel Setting
+        {
+            get
+            {
+                return ServiceLocator.Current.GetInstance<SettingViewModel>();
             }
         }
 
