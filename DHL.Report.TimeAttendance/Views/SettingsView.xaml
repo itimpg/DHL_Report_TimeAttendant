@@ -7,7 +7,11 @@
         xmlns:local="clr-namespace:DHL.Report.TimeAttendance.Views"
         xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
         mc:Ignorable="d"
-        Title="SettingsView" Height="300" Width="300">
+        BorderBrush="{DynamicResource AccentColorBrush}"
+        BorderThickness="1"
+        WindowStartupLocation="CenterScreen"
+        EnableDWMDropShadow="True"
+        Title="Settings" Height="300" Width="300">
     <Grid>
         <TextBlock Text="Settings"/>
     </Grid>

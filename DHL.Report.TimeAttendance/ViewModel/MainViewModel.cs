@@ -50,7 +50,7 @@ namespace DHL.Report.TimeAttendance.ViewModel
         {
             get
             {
-                return _openSettingsCommand ?? (_openAboutCommand = new RelayCommand(() =>
+                return _openAboutCommand ?? (_openAboutCommand = new RelayCommand(() =>
                 {
                     Messenger.Default.Send(new OpenWindowNotificationMessage("Open About", WindowType.About));
                 }));

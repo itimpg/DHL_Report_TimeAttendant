@@ -10,7 +10,7 @@ namespace DHL.Report.TimeAttendance
     {
         public MainWindow()
         {
-            //InitializeComponent();
+            InitializeComponent();
             Messenger.Default.Register<OpenWindowNotificationMessage>(this, ReplyToOpenWindowMessage);
         }
 

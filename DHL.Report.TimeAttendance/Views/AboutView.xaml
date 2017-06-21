@@ -6,8 +6,12 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:DHL.Report.TimeAttendance.Views"
         xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+        BorderBrush="{DynamicResource AccentColorBrush}"
+        BorderThickness="1"
+        WindowStartupLocation="CenterScreen"
+        EnableDWMDropShadow="True"
         mc:Ignorable="d"
-        Title="AboutView" Height="300" Width="300">
+        Title="About" Height="300" Width="300">
     <Grid>
         <TextBlock Text="About"/>
     </Grid>
