@@ -22,7 +22,14 @@ namespace DHL.Report.TimeAttendance.ViewModel
 
             SimpleIoc.Default.Register<IDialogService, DialogService>();
             SimpleIoc.Default.Register<IXmlManager, XmlManager>();
-            SimpleIoc.Default.Register<IConfigManager, ConfigManager>();
+            SimpleIoc.Default.Register<IConfigManager>(() =>
+            {
+                string appPath = System.AppDomain.CurrentDomain.BaseDirectory;
+
+                return new ConfigManager(
+                    SimpleIoc.Default.GetInstance<IXmlManager>(),
+                    appPath);
+            });
             SimpleIoc.Default.Register<IAboutManager, AboutManager>();
             SimpleIoc.Default.Register<IReportManager, ReportManager>();
 

@@ -11,8 +11,20 @@
         BorderThickness="1"
         WindowStartupLocation="CenterScreen"
         EnableDWMDropShadow="True"
-        Title="Settings" Height="300" Width="300">
-    <Grid>
-        <TextBlock Text="Settings"/>
+        Title="Settings" Height="300" Width="300"
+        DataContext="{Binding Path=Setting, Source={StaticResource Locator}}">
+    <Grid Margin="10">
+
+        <StackPanel>
+            <TextBox Controls:TextBoxHelper.Watermark="This is a textbox" />
+            <Button Style="{DynamicResource SquareButtonStyle}"
+                Command="{Binding SaveCommand}"
+                CommandParameter="{Binding Config}"
+                Content="Save"/>
+        </StackPanel>
+        
+        <Grid Background="White" Opacity="0.8" Visibility="{Binding IsLoading, Converter={StaticResource VisibleConverter}}">
+            <Controls:ProgressRing Foreground="{DynamicResource AccentColorBrush}"/>
+        </Grid>
     </Grid>
 </Controls:MetroWindow>

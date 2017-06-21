@@ -11,7 +11,8 @@
         WindowStartupLocation="CenterScreen"
         EnableDWMDropShadow="True"
         mc:Ignorable="d"
-        Title="About" Height="300" Width="300">
+        Title="About" Height="300" Width="300"
+        DataContext="{Binding Path=About, Source={StaticResource Locator}}">
     <Grid>
         <TextBlock Text="About"/>
     </Grid>

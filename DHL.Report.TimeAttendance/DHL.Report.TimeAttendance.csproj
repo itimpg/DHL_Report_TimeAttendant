@@ -78,6 +78,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Converters\VisibilityConverter.cs" />
     <Compile Include="Messages\CloseWindowNotificationMessage.cs" />
     <Compile Include="Messages\OpenWindowNotificationMessage.cs" />
     <Compile Include="Models\ReportCriteriaModel.cs" />

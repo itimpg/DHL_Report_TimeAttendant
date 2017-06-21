@@ -1,24 +1,16 @@
 ﻿using DHL.Report.TimeAttendance.Managers.Interfaces;
-using System.Threading.Tasks;
 using DHL.Report.TimeAttendance.Models;
-using System.IO;
-using System.Diagnostics;
-using System.Reflection;
 using System;
+using System.Diagnostics;
+using System.IO;
+using System.Reflection;
 
 namespace DHL.Report.TimeAttendance.Managers
 {
     public class AboutManager : IAboutManager
     {
-        #region Fields & Properties
-        private string _basePath;
-        #endregion
-
         #region Constructor
-        public AboutManager(string basePath)
-        {
-            _basePath = basePath;
-        }
+        public AboutManager() { }
         #endregion
 
         #region Public Method
