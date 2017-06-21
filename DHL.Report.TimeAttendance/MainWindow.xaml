@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:DHL.Report.TimeAttendance"
         xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
         mc:Ignorable="d"
-        Title="MainWindow" MinHeight="600" MinWidth="800"
+        Title="DHL Time Attendant Reporting" MinHeight="600" MinWidth="800"
         WindowStartupLocation="CenterScreen"
         EnableDWMDropShadow="True"
         DataContext="{Binding Path=Main, Source={StaticResource Locator}}">
