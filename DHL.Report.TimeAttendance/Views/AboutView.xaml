@@ -9,6 +9,6 @@
         mc:Ignorable="d"
         Title="AboutView" Height="300" Width="300">
     <Grid>
-        
+        <TextBlock Text="About"/>
     </Grid>
 </Controls:MetroWindow>

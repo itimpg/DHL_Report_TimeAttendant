@@ -1,34 +1,32 @@
 ﻿using System;
 using System.Threading.Tasks;
 using DHL.Report.TimeAttendance.Managers.Interfaces;
+using DHL.Report.TimeAttendance.Models;
 
 namespace DHL.Report.TimeAttendance.Managers
 {
     public class ReportManager : IReportManager
     {
-        private readonly IConfigManager _configManager;
-
-        public ReportManager(IConfigManager configManager)
+        public ReportManager()
         {
-            _configManager = configManager;
         }
 
-        public Task CreateReport1Async(string dbFilePath, string excelFilePath, string outputFullName)
+        public Task CreateReport1Async(ConfigModel config, ReportCriteriaModel criteria)
         {
             throw new NotImplementedException();
         }
 
-        public Task CreateReport2Async(string dbFilePath, string excelFilePath, string outputFullName)
+        public Task CreateReport2Async(ConfigModel config, ReportCriteriaModel criteria)
         {
             throw new NotImplementedException();
         }
 
-        public Task CreateReport3Async(string dbFilePath, string excelFilePath, string outputFullName)
+        public Task CreateReport3Async(ConfigModel config, ReportCriteriaModel criteria)
         {
             throw new NotImplementedException();
         }
 
-        public Task CreateReport4Async(string dbFilePath, string excelFilePath, string outputFullName)
+        public Task CreateReport4Async(ConfigModel config, ReportCriteriaModel criteria)
         {
             throw new NotImplementedException();
         }

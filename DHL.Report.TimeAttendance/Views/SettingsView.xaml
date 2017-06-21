@@ -9,6 +9,6 @@
         mc:Ignorable="d"
         Title="SettingsView" Height="300" Width="300">
     <Grid>
-        
+        <TextBlock Text="Settings"/>
     </Grid>
 </Controls:MetroWindow>

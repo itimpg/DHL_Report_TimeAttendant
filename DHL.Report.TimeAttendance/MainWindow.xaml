@@ -13,8 +13,8 @@
         DataContext="{Binding Path=Main, Source={StaticResource Locator}}">
     <Controls:MetroWindow.RightWindowCommands>
         <Controls:WindowCommands>
-            <Button Content="settings" />
-            <Button Content="about" />
+            <Button Content="settings" Command="{Binding OpenSettingsCommand}" />
+            <Button Content="about" Command="{Binding OpenAboutCommand}" />
         </Controls:WindowCommands>
     </Controls:MetroWindow.RightWindowCommands>
     <Grid>

@@ -80,6 +80,7 @@
     </ApplicationDefinition>
     <Compile Include="Messages\CloseWindowNotificationMessage.cs" />
     <Compile Include="Messages\OpenWindowNotificationMessage.cs" />
+    <Compile Include="Models\ReportCriteriaModel.cs" />
     <Compile Include="Services\DialogService.cs" />
     <Compile Include="Services\Interfaces\IDialogService.cs" />
     <Compile Include="ViewModel\AboutViewModel.cs" />

@@ -1,5 +1,6 @@
 using DHL.Report.TimeAttendance.Managers.Interfaces;
 using DHL.Report.TimeAttendance.Messages;
+using DHL.Report.TimeAttendance.Models;
 using DHL.Report.TimeAttendance.Services.Interfaces;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
@@ -23,46 +24,11 @@ namespace DHL.Report.TimeAttendance.ViewModel
             set { Set(() => IsLoading, ref _isLoading, value); }
         }
 
-        private string _accessFilePath;
-        public string AccessFilePath
+        private ReportCriteriaModel _reportCriteria;
+        public ReportCriteriaModel ReportCriteria
         {
-            get { return _accessFilePath; }
-            set { Set(() => AccessFilePath, ref _accessFilePath, value); }
-        }
-
-        private string _excelFilePath;
-        public string ExcelFilePath
-        {
-            get { return _excelFilePath; }
-            set { Set(() => ExcelFilePath, ref _excelFilePath, value); }
-        }
-
-        private bool _isOption1;
-        public bool IsOption1
-        {
-            get { return _isOption1; }
-            set { Set(() => IsOption1, ref _isOption1, value); }
-        }
-
-        private bool _isOption2;
-        public bool IsOption2
-        {
-            get { return _isOption2; }
-            set { Set(() => IsOption2, ref _isOption2, value); }
-        }
-
-        private bool _isOption3;
-        public bool IsOption3
-        {
-            get { return _isOption3; }
-            set { Set(() => IsOption3, ref _isOption3, value); }
-        }
-
-        private bool _isOption4;
-        public bool IsOption4
-        {
-            get { return _isOption4; }
-            set { Set(() => IsOption4, ref _isOption4, value); }
+            get { return _reportCriteria; }
+            set { Set(() => ReportCriteria, ref _reportCriteria, value); }
         }
         #endregion
 
@@ -98,7 +64,7 @@ namespace DHL.Report.TimeAttendance.ViewModel
             {
                 return _generateReportCommand ?? (_generateReportCommand = new RelayCommand(async () =>
                 {
-                    await _reportManager.CreateReport1Async("", "", "");
+                    await _reportManager.CreateReport1Async(null, null);
                 }));
             }
         }
