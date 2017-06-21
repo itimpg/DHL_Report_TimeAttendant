@@ -32,7 +32,7 @@ namespace DHL.Report.TimeAttendance.ViewModel
         public ViewModelLocator()
         {
             ServiceLocator.SetLocatorProvider(() => SimpleIoc.Default);
-            
+
             SimpleIoc.Default.Register<IXmlManager, XmlManager>();
             SimpleIoc.Default.Register<IConfigManager, ConfigManager>();
             SimpleIoc.Default.Register<IAboutManager, AboutManager>();
@@ -40,6 +40,7 @@ namespace DHL.Report.TimeAttendance.ViewModel
 
             SimpleIoc.Default.Register<MainViewModel>();
             SimpleIoc.Default.Register<SettingViewModel>();
+            SimpleIoc.Default.Register<AboutViewModel>();
         }
 
         public MainViewModel Main
@@ -55,6 +56,14 @@ namespace DHL.Report.TimeAttendance.ViewModel
             get
             {
                 return ServiceLocator.Current.GetInstance<SettingViewModel>();
+            }
+        }
+
+        public AboutViewModel About
+        {
+            get
+            {
+                return ServiceLocator.Current.GetInstance<AboutViewModel>();
             }
         }
 

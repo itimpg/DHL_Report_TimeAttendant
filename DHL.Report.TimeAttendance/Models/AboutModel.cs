@@ -1,10 +1,22 @@
-﻿using System;
+﻿using GalaSoft.MvvmLight;
+using System;
 
 namespace DHL.Report.TimeAttendance.Models
 {
-    public class AboutModel
+    public class AboutModel : ObservableObject
     {
-        public string Version { get; set; }
-        public DateTime LatestUpdatedDate { get; set; }
+        private string _version;
+        public string Version
+        {
+            get { return _version; }
+            set { Set(() => Version, ref _version, value); }
+        }
+
+        private DateTime _latestUpdatedDate;
+        public DateTime LatestUpdatedDate
+        {
+            get { return _latestUpdatedDate; }
+            set { Set(() => LatestUpdatedDate, ref _latestUpdatedDate, value); }
+        }
     }
 }
