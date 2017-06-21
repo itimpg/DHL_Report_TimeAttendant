@@ -1,20 +1,7 @@
-/*
-  In App.xaml:
-  <Application.Resources>
-      <vm:ViewModelLocator xmlns:vm="clr-namespace:DHL.Report.TimeAttendance"
-                           x:Key="Locator" />
-  </Application.Resources>
-  
-  In the View:
-  DataContext="{Binding Source={StaticResource Locator}, Path=ViewModelName}"
-
-  You can also use Blend to do all this with the tool's support.
-  See http://www.galasoft.ch/mvvm
-*/
-
 using DHL.Report.TimeAttendance.Managers;
 using DHL.Report.TimeAttendance.Managers.Interfaces;
-using GalaSoft.MvvmLight;
+using DHL.Report.TimeAttendance.Services;
+using DHL.Report.TimeAttendance.Services.Interfaces;
 using GalaSoft.MvvmLight.Ioc;
 using Microsoft.Practices.ServiceLocation;
 
@@ -33,6 +20,7 @@ namespace DHL.Report.TimeAttendance.ViewModel
         {
             ServiceLocator.SetLocatorProvider(() => SimpleIoc.Default);
 
+            SimpleIoc.Default.Register<IDialogService, DialogService>();
             SimpleIoc.Default.Register<IXmlManager, XmlManager>();
             SimpleIoc.Default.Register<IConfigManager, ConfigManager>();
             SimpleIoc.Default.Register<IAboutManager, AboutManager>();

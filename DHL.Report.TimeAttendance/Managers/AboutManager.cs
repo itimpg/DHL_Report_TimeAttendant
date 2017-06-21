@@ -22,21 +22,18 @@ namespace DHL.Report.TimeAttendance.Managers
         #endregion
 
         #region Public Method
-        public async Task<AboutModel> GetAboutAsyc()
+        public AboutModel GetAbout()
         {
-            return await Task.Run(() =>
-            {
-                var assembly = Assembly.GetExecutingAssembly();
-                FileVersionInfo fvi = FileVersionInfo.GetVersionInfo(assembly.Location);
-                string version = fvi.FileVersion;
-                DateTime lastedUpdatedDate = File.GetCreationTime(assembly.Location);
+            var assembly = Assembly.GetExecutingAssembly();
+            FileVersionInfo fvi = FileVersionInfo.GetVersionInfo(assembly.Location);
+            string version = fvi.FileVersion;
+            DateTime lastedUpdatedDate = File.GetCreationTime(assembly.Location);
 
-                return new AboutModel()
-                {
-                    Version = version,
-                    LatestUpdatedDate = lastedUpdatedDate
-                };
-            });
+            return new AboutModel()
+            {
+                Version = version,
+                LatestUpdatedDate = lastedUpdatedDate
+            };
         }
         #endregion
     }

@@ -2,6 +2,7 @@
 using DHL.Report.TimeAttendance.Models;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
+using GalaSoft.MvvmLight.Messaging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -32,9 +33,9 @@ namespace DHL.Report.TimeAttendance.ViewModel
         {
             get
             {
-                return _showCommand ?? (_showCommand = new RelayCommand(async () =>
+                return _showCommand ?? (_showCommand = new RelayCommand(() =>
                 {
-                    AboutModel = await _aboutManager.GetAboutAsyc();
+                    AboutModel = _aboutManager.GetAbout();
                 }));
             }
         }
