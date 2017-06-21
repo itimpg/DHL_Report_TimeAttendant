@@ -6,23 +6,77 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:DHL.Report.TimeAttendance.Views"
         xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+        xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
         mc:Ignorable="d"
         BorderBrush="{DynamicResource AccentColorBrush}"
         BorderThickness="1"
         WindowStartupLocation="CenterScreen"
         EnableDWMDropShadow="True"
-        Title="Settings" Height="300" Width="300"
+        Title="Settings" 
+        Height="460" 
+        Width="380"
+        ResizeMode="NoResize"
         DataContext="{Binding Path=Setting, Source={StaticResource Locator}}">
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Loaded">
+            <i:InvokeCommandAction Command="{Binding OnLoadCommand}" />
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
+
     <Grid Margin="10">
 
         <StackPanel>
-            <TextBox Controls:TextBoxHelper.Watermark="This is a textbox" />
-            <Button Style="{DynamicResource SquareButtonStyle}"
-                Command="{Binding SaveCommand}"
-                CommandParameter="{Binding Config}"
-                Content="Save"/>
+            <GroupBox Header="{Binding Name}" DataContext="{Binding Config.MorningShift}">
+                <StackPanel Orientation="Horizontal">
+                    <Label Content="เวลาทำงาน"/>
+                    <Controls:TimePicker SelectedTime="{Binding From}"/>
+                    <Label Content="ถึง"/>
+                    <Controls:TimePicker SelectedTime="{Binding To}"/>
+                </StackPanel>
+            </GroupBox>
+            <GroupBox Header="{Binding Name}" DataContext="{Binding Config.EveningShift}">
+                <StackPanel Orientation="Horizontal">
+                    <Label Content="เวลาทำงาน"/>
+                    <Controls:TimePicker SelectedTime="{Binding From}"/>
+                    <Label Content="ถึง"/>
+                    <Controls:TimePicker SelectedTime="{Binding To}"/>
+                </StackPanel>
+            </GroupBox>
+            <GroupBox Header="{Binding Name}" DataContext="{Binding Config.NightShift}">
+                <StackPanel Orientation="Horizontal">
+                    <Label Content="เวลาทำงาน"/>
+                    <Controls:TimePicker SelectedTime="{Binding From}"/>
+                    <Label Content="ถึง"/>
+                    <Controls:TimePicker SelectedTime="{Binding To}"/>
+                </StackPanel>
+            </GroupBox>
+            <GroupBox Header="{Binding Name}" DataContext="{Binding Config.MorningShiftWithOT}">
+                <StackPanel Orientation="Horizontal">
+                    <Label Content="เวลาทำงาน"/>
+                    <Controls:TimePicker SelectedTime="{Binding From}"/>
+                    <Label Content="ถึง"/>
+                    <Controls:TimePicker SelectedTime="{Binding To}"/>
+                </StackPanel>
+            </GroupBox>
+            <GroupBox Header="{Binding Name}" DataContext="{Binding Config.NightShiftWithOT}">
+                <StackPanel Orientation="Horizontal">
+                    <Label Content="เวลาทำงาน"/>
+                    <Controls:TimePicker SelectedTime="{Binding From}"/>
+                    <Label Content="ถึง"/>
+                    <Controls:TimePicker SelectedTime="{Binding To}"/>
+                </StackPanel>
+            </GroupBox>
+            <StackPanel Margin="5">
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                    <Button Style="{StaticResource SquareButtonStyle}"
+                        Command="{Binding SaveCommand}"
+                        CommandParameter="{Binding Config}"
+                        Width="100"
+                        Content="บันทึก"/>
+                </StackPanel>
+            </StackPanel>
         </StackPanel>
-        
+
         <Grid Background="White" Opacity="0.8" Visibility="{Binding IsLoading, Converter={StaticResource VisibleConverter}}">
             <Controls:ProgressRing Foreground="{DynamicResource AccentColorBrush}"/>
         </Grid>

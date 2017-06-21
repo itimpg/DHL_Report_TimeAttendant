@@ -6,7 +6,11 @@ namespace DHL.Report.TimeAttendance.Models
     public class ConfigModel : ObservableObject
     {
         private Shift _morningShift;
-        public Shift MorningShift { get; set; }
+        public Shift MorningShift
+        {
+            get { return _morningShift; }
+            set { Set(() => MorningShift, ref _morningShift, value); }
+        }
 
         private Shift _eveningShift;
         public Shift EveningShift
