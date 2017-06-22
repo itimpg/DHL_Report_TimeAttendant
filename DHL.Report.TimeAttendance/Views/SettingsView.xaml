@@ -23,9 +23,8 @@
         </i:EventTrigger>
     </i:Interaction.Triggers>
 
-    <Grid Margin="10">
-
-        <StackPanel>
+    <Grid>
+        <StackPanel Margin="10">
             <GroupBox Header="{Binding Name}" DataContext="{Binding Config.MorningShift}">
                 <StackPanel Orientation="Horizontal">
                     <Label Content="เวลาทำงาน"/>
@@ -77,7 +76,7 @@
             </StackPanel>
         </StackPanel>
 
-        <Grid Background="White" Opacity="0.8" Visibility="{Binding IsLoading, Converter={StaticResource VisibleConverter}}">
+        <Grid Background="Black" Opacity="0.7" Visibility="{Binding IsLoading, Converter={StaticResource VisibleConverter}}">
             <Controls:ProgressRing Foreground="{DynamicResource AccentColorBrush}"/>
         </Grid>
     </Grid>

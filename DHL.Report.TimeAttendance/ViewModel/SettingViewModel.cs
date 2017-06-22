@@ -1,8 +1,10 @@
 ﻿using DHL.Report.TimeAttendance.Managers.Interfaces;
+using DHL.Report.TimeAttendance.Messages;
 using DHL.Report.TimeAttendance.Models;
 using DHL.Report.TimeAttendance.Services.Interfaces;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
+using GalaSoft.MvvmLight.Messaging;
 using System;
 using System.Windows.Input;
 
@@ -64,7 +66,20 @@ namespace DHL.Report.TimeAttendance.ViewModel
             {
                 return _saveCommand ?? (_saveCommand = new RelayCommand<ConfigModel>(async c =>
                 {
-                    await _configManager.SaveConfigAsync(c);
+                    try
+                    {
+                        IsLoading = true;
+                        await _configManager.SaveConfigAsync(c);
+                        Messenger.Default.Send(new CloseWindowNotificationMessage("Close Settings", WindowType.Settings));
+                    }
+                    catch (Exception ex)
+                    {
+                        _dialogService.ShowMessage(ex.Message, "Error");
+                    }
+                    finally
+                    {
+                        IsLoading = false;
+                    }
                 }));
             }
         }

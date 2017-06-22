@@ -7,7 +7,10 @@
         xmlns:local="clr-namespace:DHL.Report.TimeAttendance"
         xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
         mc:Ignorable="d"
-        Title="DHL Time Attendant Reporting" MinHeight="600" MinWidth="800"
+        Title="DHL Time Attendant Reporting" 
+        Height="480"
+        Width="720"
+        ResizeMode="NoResize"
         BorderBrush="{DynamicResource AccentColorBrush}"
         BorderThickness="1"
         WindowStartupLocation="CenterScreen"
@@ -20,6 +23,53 @@
         </Controls:WindowCommands>
     </Controls:MetroWindow.RightWindowCommands>
     <Grid>
-        <TextBlock>Hello World</TextBlock>
+        <StackPanel Margin="10">
+
+            <GroupBox Header="ฐานข้อมูลของระบบลงเวลาเข้าออก:">
+                <StackPanel Orientation="Horizontal">
+                    <TextBox IsReadOnly="True" Text="C:/database.mdb" Width="400"/>
+                    <Button Content="Browse..." Width="80"
+                            Style="{DynamicResource SquareButtonStyle}"/>
+                    <Label Content="Password:"/>
+                    <TextBox Width="120"/>
+                </StackPanel>
+            </GroupBox>
+
+            <GroupBox Header="ไฟล์ Excel จากระบบ HR:">
+                <StackPanel Orientation="Horizontal">
+                    <TextBox IsReadOnly="True" Text="C:/HRExcel.xlsx" Width="400"/>
+                    <Button Content="Browse..." Width="80"
+                            Style="{DynamicResource SquareButtonStyle}"/>
+                </StackPanel>
+            </GroupBox>
+
+            <GroupBox Header="โฟลเดอร์สำหรับเก็บรายงาน:">
+                <StackPanel Orientation="Horizontal">
+                    <TextBox IsReadOnly="True" Text="C:/Reports" Width="400"/>
+                    <Button Content="Browse..." Width="80"
+                            Style="{DynamicResource SquareButtonStyle}"/>
+                </StackPanel>
+            </GroupBox>
+            
+            <GroupBox Header="รายงาน">
+                <StackPanel>
+                    <CheckBox Margin="0,5" Content="รายงานประจำเดือน"/>
+                    <CheckBox Margin="0,5" Content="รายงานประจำวัน"/>
+                    <CheckBox Margin="0,5" Content="รายงานเฉลี่ย"/>
+                    <CheckBox Margin="0,5" Content="รายงานประจำวันรวม"/>
+                </StackPanel>
+            </GroupBox>
+
+            <StackPanel Margin="5">
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                    <Button Style="{StaticResource SquareButtonStyle}"
+                        Width="120"
+                        Content="สร้างรายงาน"/>
+                </StackPanel>
+            </StackPanel>
+        </StackPanel>
+        <Grid Background="Black" Opacity="0" Visibility="{Binding IsLoading, Converter={StaticResource VisibleConverter}}">
+            <Controls:ProgressRing Foreground="{DynamicResource AccentColorBrush}"/>
+        </Grid>
     </Grid>
 </Controls:MetroWindow>
