@@ -15,6 +15,7 @@ namespace DHL.Report.TimeAttendance.Messages
 
     public enum WindowType
     {
+        Shift,
         Settings,
         About,
     }

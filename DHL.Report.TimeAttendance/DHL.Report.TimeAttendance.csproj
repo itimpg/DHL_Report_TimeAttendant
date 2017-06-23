@@ -82,6 +82,7 @@
     <Compile Include="Messages\CloseWindowNotificationMessage.cs" />
     <Compile Include="Messages\OpenWindowNotificationMessage.cs" />
     <Compile Include="Models\ReportCriteriaModel.cs" />
+    <Compile Include="Models\ShiftModel.cs" />
     <Compile Include="Services\DialogService.cs" />
     <Compile Include="Services\Interfaces\IDialogService.cs" />
     <Compile Include="ViewModel\AboutViewModel.cs" />
@@ -90,6 +91,9 @@
     <Compile Include="ViewModel\ViewModelLocator.cs" />
     <Compile Include="Views\AboutView.xaml.cs">
       <DependentUpon>AboutView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\AddEditShiftView.xaml.cs">
+      <DependentUpon>AddEditShiftView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\SettingsView.xaml.cs">
       <DependentUpon>SettingsView.xaml</DependentUpon>
@@ -109,6 +113,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="Views\AboutView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\AddEditShiftView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

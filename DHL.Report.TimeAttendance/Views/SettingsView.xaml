@@ -14,9 +14,9 @@
         EnableDWMDropShadow="True"
         Title="Settings" 
         Height="460" 
-        Width="380"
-        ResizeMode="NoResize"
+        Width="420"
         DataContext="{Binding Path=Setting, Source={StaticResource Locator}}">
+
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Loaded">
             <i:InvokeCommandAction Command="{Binding OnLoadCommand}" />
@@ -24,57 +24,78 @@
     </i:Interaction.Triggers>
 
     <Grid>
-        <StackPanel Margin="10">
-            <GroupBox Header="{Binding Name}" DataContext="{Binding Config.MorningShift}">
-                <StackPanel Orientation="Horizontal">
-                    <Label Content="เวลาทำงาน"/>
-                    <Controls:TimePicker SelectedTime="{Binding From}"/>
-                    <Label Content="ถึง"/>
-                    <Controls:TimePicker SelectedTime="{Binding To}"/>
-                </StackPanel>
-            </GroupBox>
-            <GroupBox Header="{Binding Name}" DataContext="{Binding Config.EveningShift}">
-                <StackPanel Orientation="Horizontal">
-                    <Label Content="เวลาทำงาน"/>
-                    <Controls:TimePicker SelectedTime="{Binding From}"/>
-                    <Label Content="ถึง"/>
-                    <Controls:TimePicker SelectedTime="{Binding To}"/>
-                </StackPanel>
-            </GroupBox>
-            <GroupBox Header="{Binding Name}" DataContext="{Binding Config.NightShift}">
-                <StackPanel Orientation="Horizontal">
-                    <Label Content="เวลาทำงาน"/>
-                    <Controls:TimePicker SelectedTime="{Binding From}"/>
-                    <Label Content="ถึง"/>
-                    <Controls:TimePicker SelectedTime="{Binding To}"/>
-                </StackPanel>
-            </GroupBox>
-            <GroupBox Header="{Binding Name}" DataContext="{Binding Config.MorningShiftWithOT}">
-                <StackPanel Orientation="Horizontal">
-                    <Label Content="เวลาทำงาน"/>
-                    <Controls:TimePicker SelectedTime="{Binding From}"/>
-                    <Label Content="ถึง"/>
-                    <Controls:TimePicker SelectedTime="{Binding To}"/>
-                </StackPanel>
-            </GroupBox>
-            <GroupBox Header="{Binding Name}" DataContext="{Binding Config.NightShiftWithOT}">
-                <StackPanel Orientation="Horizontal">
-                    <Label Content="เวลาทำงาน"/>
-                    <Controls:TimePicker SelectedTime="{Binding From}"/>
-                    <Label Content="ถึง"/>
-                    <Controls:TimePicker SelectedTime="{Binding To}"/>
-                </StackPanel>
-            </GroupBox>
-            <StackPanel Margin="5">
+        <Grid Margin="10">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <StackPanel Grid.Row="0" Margin="5">
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
                     <Button Style="{StaticResource SquareButtonStyle}"
-                        Command="{Binding SaveCommand}"
-                        CommandParameter="{Binding Config}"
-                        Width="100"
-                        Content="บันทึก"/>
+                        Width="120"
+                        Content="เพิ่มกะ"/>
                 </StackPanel>
             </StackPanel>
-        </StackPanel>
+            <ListView Grid.Row="1" ItemsSource="{Binding ShiftItems}">
+                <ListView.ItemContainerStyle>
+                    <Style TargetType="{x:Type ListViewItem}">
+                        <Setter Property="Focusable" Value="False"/>
+                    </Style>
+                </ListView.ItemContainerStyle>
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <GroupBox DataContext="{Binding}">
+                            <GroupBox.Header>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Label Grid.Column="0" Content="{Binding Code}"/>
+                                    <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right">
+                                        <Button HorizontalAlignment="Right" Style="{StaticResource MetroBaseWindowButtonStyle}" Content="แก้ไข" Margin="5,0"/>
+                                        <Button HorizontalAlignment="Right" Style="{StaticResource MetroBaseWindowButtonStyle}" Content="ลบ" Margin="5,0"/>
+                                    </StackPanel>
+                                </Grid>
+                            </GroupBox.Header>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="auto"/>
+                                    <ColumnDefinition Width="auto"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                </Grid.RowDefinitions>
+
+                                <Label Grid.Row="1" Grid.Column="0" Content="เวลาทำงาน"/>
+                                <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal">
+                                    <Controls:TimePicker SelectedTime="{Binding WorkFrom}" IsReadOnly="True"/>
+                                    <Label Content="ถึง"/>
+                                    <Controls:TimePicker SelectedTime="{Binding WorkTo}" IsReadOnly="True"/>
+                                </StackPanel>
+
+                                <Label Grid.Row="2" Grid.Column="0" Content="เวลาพักทานข้าว"/>
+                                <StackPanel Grid.Row="2" Grid.Column="1" Orientation="Horizontal">
+                                    <Controls:TimePicker SelectedTime="{Binding MealFrom}" IsReadOnly="True"/>
+                                    <Label Content="ถึง"/>
+                                    <Controls:TimePicker SelectedTime="{Binding MealTo}" IsReadOnly="True"/>
+                                </StackPanel>
+
+                                <Label Grid.Row="3" Grid.Column="0" Content="เวลาพักเบรกอื่น ๆ"/>
+                                <StackPanel Grid.Row="3" Grid.Column="1" Orientation="Horizontal">
+                                    <Controls:TimePicker SelectedTime="{Binding BreakFrom}" IsReadOnly="True"/>
+                                    <Label Content="ถึง"/>
+                                    <Controls:TimePicker SelectedTime="{Binding BreakTo}" IsReadOnly="True"/>
+                                </StackPanel>
+                            </Grid>
+                        </GroupBox>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </Grid>
 
         <Grid Background="Black" Opacity="0.7" Visibility="{Binding IsLoading, Converter={StaticResource VisibleConverter}}">
             <Controls:ProgressRing Foreground="{DynamicResource AccentColorBrush}"/>

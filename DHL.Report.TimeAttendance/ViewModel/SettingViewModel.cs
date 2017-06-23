@@ -6,6 +6,8 @@ using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
 using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Windows.Input;
 
 namespace DHL.Report.TimeAttendance.ViewModel
@@ -25,12 +27,8 @@ namespace DHL.Report.TimeAttendance.ViewModel
             set { Set(() => IsLoading, ref _isLoading, value); }
         }
 
-        private ConfigModel _config;
-        public ConfigModel Config
-        {
-            get { return _config; }
-            set { Set(() => Config, ref _config, value); }
-        }
+        public ObservableCollection<ShiftModel> ShiftItems { get; set; }
+
         #endregion
 
         #region Command
@@ -39,24 +37,103 @@ namespace DHL.Report.TimeAttendance.ViewModel
         {
             get
             {
-                return _onLoadCommand ?? (_onLoadCommand = new RelayCommand(async () =>
-                {
-                    try
-                    {
-                        IsLoading = true;
+                return _onLoadCommand ?? (_onLoadCommand = new RelayCommand(() =>
+               {
+                   try
+                   {
+                       IsLoading = true;
 
-                        Config = await _configManager.GetConfigAsync();
-                    }
-                    catch (Exception ex)
-                    {
-                        _dialogService.ShowMessage(ex.Message, "Error");
-                    }
-                    finally
-                    {
-                        IsLoading = false;
-                    }
-                }));
+                       var items = FAKE_GET_SHIFTS();
+
+                       ShiftItems.Clear();
+                       foreach (var item in items)
+                       {
+                           ShiftItems.Add(item);
+                       }
+                   }
+                   catch (Exception ex)
+                   {
+                       _dialogService.ShowMessage(ex.Message, "Error");
+                   }
+                   finally
+                   {
+                       IsLoading = false;
+                   }
+               }));
             }
+        }
+
+        private List<ShiftModel> FAKE_GET_SHIFTS()
+        {
+            return new List<ShiftModel>
+            {
+                new ShiftModel
+                {
+                    Code = "02",
+                    WorkFrom = new TimeSpan(8, 30, 0),
+                    WorkTo = new TimeSpan(17, 30, 0),
+                    MealFrom = new TimeSpan(12, 0, 0),
+                    MealTo = new TimeSpan(13, 0, 0),
+                    BreakFrom = new TimeSpan(17, 30, 0),
+                    BreakTo = new TimeSpan(18, 0, 0)
+                },
+
+                new ShiftModel
+                {
+                    Code = "09",
+                    WorkFrom = new TimeSpan(21, 0, 0),
+                    WorkTo = new TimeSpan(6, 0, 0),
+                    MealFrom = new TimeSpan(1, 0, 0),
+                    MealTo = new TimeSpan(2, 0, 0),
+                    BreakFrom = new TimeSpan(6, 0, 0),
+                    BreakTo = new TimeSpan(6, 30, 0)
+                },
+
+                new ShiftModel
+                {
+                    Code = "10",
+                    WorkFrom = new TimeSpan(6, 0, 0),
+                    WorkTo = new TimeSpan(15, 0, 0),
+                    MealFrom = new TimeSpan(11, 0, 0),
+                    MealTo = new TimeSpan(12, 0, 0),
+                    BreakFrom = new TimeSpan(15, 0, 0),
+                    BreakTo = new TimeSpan(15, 30, 0)
+                },
+
+                new ShiftModel
+                {
+                    Code = "33",
+                    WorkFrom = new TimeSpan(14, 0, 0),
+                    WorkTo = new TimeSpan(23, 0, 0),
+                    MealFrom = new TimeSpan(18, 0, 0),
+                    MealTo = new TimeSpan(19, 0, 0),
+                    BreakFrom = new TimeSpan(23, 0, 0),
+                    BreakTo = new TimeSpan(23, 30, 0)
+                },
+
+                new ShiftModel
+                {
+                    Code = "34",
+                    WorkFrom = new TimeSpan(22, 0, 0),
+                    WorkTo = new TimeSpan(7, 0, 0),
+                    MealFrom = new TimeSpan(2, 0, 0),
+                    MealTo = new TimeSpan(3, 0, 0),
+                    BreakFrom = new TimeSpan(7, 0, 0),
+                    BreakTo = new TimeSpan(7, 30, 0)
+                },
+
+                new ShiftModel
+                {
+                    Code = "35",
+                    WorkFrom = new TimeSpan(18, 0, 0),
+                    WorkTo = new TimeSpan(3, 0, 0),
+                    MealFrom = new TimeSpan(22, 0, 0),
+                    MealTo = new TimeSpan(23, 0, 0),
+                    BreakFrom = new TimeSpan(3, 0, 0),
+                    BreakTo = new TimeSpan(3, 30, 0)
+                },
+
+            };
         }
 
         private ICommand _saveCommand;
@@ -90,6 +167,8 @@ namespace DHL.Report.TimeAttendance.ViewModel
         {
             _configManager = configManager;
             _dialogService = dialogService;
+
+            ShiftItems = new ObservableCollection<ShiftModel>();
         }
         #endregion
     }
