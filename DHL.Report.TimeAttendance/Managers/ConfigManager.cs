@@ -19,11 +19,7 @@ namespace DHL.Report.TimeAttendance.Managers
             {
                 return new ConfigModel
                 {
-                    MorningShift = new Shift { Name = "กะเช้า", From = new TimeSpan(6, 0, 0), To = new TimeSpan(15, 0, 0) },
-                    EveningShift = new Shift { Name = "กะบ่าย", From = new TimeSpan(14, 0, 0), To = new TimeSpan(23, 0, 0) },
-                    NightShift = new Shift { Name = "กะดึก", From = new TimeSpan(22, 0, 0), To = new TimeSpan(7, 0, 0) },
-                    MorningShiftWithOT = new Shift { Name = "กะเช้ามีโอที", From = new TimeSpan(6, 0, 0), To = new TimeSpan(18, 0, 0) },
-                    NightShiftWithOT = new Shift { Name = "กะดึกมีโอที", From = new TimeSpan(18, 0, 0), To = new TimeSpan(6, 0, 0) }
+                    // TODO: init for default config
                 };
             }
         }

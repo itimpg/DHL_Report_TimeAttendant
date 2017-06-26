@@ -15,6 +15,7 @@ namespace DHL.Report.TimeAttendance.ViewModel
     public class SettingViewModel : ViewModelBase
     {
         #region Field
+        private readonly IShiftManager _shiftManager;
         private readonly IDialogService _dialogService;
         private readonly IConfigManager _configManager;
         #endregion
@@ -37,13 +38,13 @@ namespace DHL.Report.TimeAttendance.ViewModel
         {
             get
             {
-                return _onLoadCommand ?? (_onLoadCommand = new RelayCommand(() =>
+                return _onLoadCommand ?? (_onLoadCommand = new RelayCommand(async () =>
                {
                    try
                    {
                        IsLoading = true;
 
-                       var items = FAKE_GET_SHIFTS();
+                       var items = await _shiftManager.GetShiftsAsync();
 
                        ShiftItems.Clear();
                        foreach (var item in items)
@@ -61,79 +62,6 @@ namespace DHL.Report.TimeAttendance.ViewModel
                    }
                }));
             }
-        }
-
-        private List<ShiftModel> FAKE_GET_SHIFTS()
-        {
-            return new List<ShiftModel>
-            {
-                new ShiftModel
-                {
-                    Code = "02",
-                    WorkFrom = new TimeSpan(8, 30, 0),
-                    WorkTo = new TimeSpan(17, 30, 0),
-                    MealFrom = new TimeSpan(12, 0, 0),
-                    MealTo = new TimeSpan(13, 0, 0),
-                    BreakFrom = new TimeSpan(17, 30, 0),
-                    BreakTo = new TimeSpan(18, 0, 0)
-                },
-
-                new ShiftModel
-                {
-                    Code = "09",
-                    WorkFrom = new TimeSpan(21, 0, 0),
-                    WorkTo = new TimeSpan(6, 0, 0),
-                    MealFrom = new TimeSpan(1, 0, 0),
-                    MealTo = new TimeSpan(2, 0, 0),
-                    BreakFrom = new TimeSpan(6, 0, 0),
-                    BreakTo = new TimeSpan(6, 30, 0)
-                },
-
-                new ShiftModel
-                {
-                    Code = "10",
-                    WorkFrom = new TimeSpan(6, 0, 0),
-                    WorkTo = new TimeSpan(15, 0, 0),
-                    MealFrom = new TimeSpan(11, 0, 0),
-                    MealTo = new TimeSpan(12, 0, 0),
-                    BreakFrom = new TimeSpan(15, 0, 0),
-                    BreakTo = new TimeSpan(15, 30, 0)
-                },
-
-                new ShiftModel
-                {
-                    Code = "33",
-                    WorkFrom = new TimeSpan(14, 0, 0),
-                    WorkTo = new TimeSpan(23, 0, 0),
-                    MealFrom = new TimeSpan(18, 0, 0),
-                    MealTo = new TimeSpan(19, 0, 0),
-                    BreakFrom = new TimeSpan(23, 0, 0),
-                    BreakTo = new TimeSpan(23, 30, 0)
-                },
-
-                new ShiftModel
-                {
-                    Code = "34",
-                    WorkFrom = new TimeSpan(22, 0, 0),
-                    WorkTo = new TimeSpan(7, 0, 0),
-                    MealFrom = new TimeSpan(2, 0, 0),
-                    MealTo = new TimeSpan(3, 0, 0),
-                    BreakFrom = new TimeSpan(7, 0, 0),
-                    BreakTo = new TimeSpan(7, 30, 0)
-                },
-
-                new ShiftModel
-                {
-                    Code = "35",
-                    WorkFrom = new TimeSpan(18, 0, 0),
-                    WorkTo = new TimeSpan(3, 0, 0),
-                    MealFrom = new TimeSpan(22, 0, 0),
-                    MealTo = new TimeSpan(23, 0, 0),
-                    BreakFrom = new TimeSpan(3, 0, 0),
-                    BreakTo = new TimeSpan(3, 30, 0)
-                },
-
-            };
         }
 
         private ICommand _saveCommand;
@@ -163,8 +91,12 @@ namespace DHL.Report.TimeAttendance.ViewModel
         #endregion
 
         #region Constructor
-        public SettingViewModel(IConfigManager configManager, IDialogService dialogService)
+        public SettingViewModel(
+            IConfigManager configManager,
+            IShiftManager shiftManager,
+            IDialogService dialogService)
         {
+            _shiftManager = shiftManager;
             _configManager = configManager;
             _dialogService = dialogService;
 

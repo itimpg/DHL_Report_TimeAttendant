@@ -7,9 +7,18 @@ namespace DHL.Report.TimeAttendance.Managers
 {
     public class ReportManager : IReportManager
     {
-        public ReportManager()
+        #region Fields
+        private readonly IShiftManager _shiftManager;
+        private readonly IConfigManager _configManager;
+        #endregion
+
+        #region Constructor
+        public ReportManager(IShiftManager shiftManager, IConfigManager configManager)
         {
+            _shiftManager = shiftManager;
+            _configManager = configManager;
         }
+        #endregion
 
         public Task CreateReport1Async(ConfigModel config, ReportCriteriaModel criteria)
         {

@@ -79,6 +79,8 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Converters\VisibilityConverter.cs" />
+    <Compile Include="Managers\Interfaces\IShiftManager.cs" />
+    <Compile Include="Managers\ShiftManager.cs" />
     <Compile Include="Messages\CloseWindowNotificationMessage.cs" />
     <Compile Include="Messages\OpenWindowNotificationMessage.cs" />
     <Compile Include="Models\ReportCriteriaModel.cs" />

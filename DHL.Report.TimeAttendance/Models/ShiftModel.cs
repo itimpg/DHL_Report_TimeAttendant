@@ -5,6 +5,13 @@ namespace DHL.Report.TimeAttendance.Models
 {
     public class ShiftModel : ObservableObject
     {
+        private int _id;
+        public int Id
+        {
+            get { return _id; }
+            set { Set(() => Id, ref _id, value); }
+        }
+
         private string _code;
         public string Code
         {
