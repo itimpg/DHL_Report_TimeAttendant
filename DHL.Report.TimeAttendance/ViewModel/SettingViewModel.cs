@@ -6,7 +6,7 @@ using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
 using System;
-using System.Collections.Generic;
+using System.Linq;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
 
@@ -63,19 +63,44 @@ namespace DHL.Report.TimeAttendance.ViewModel
                }));
             }
         }
-
-        private ICommand _saveCommand;
-        public ICommand SaveCommand
+        
+        private ICommand _addShiftCommand;
+        public ICommand AddShiftCommand
         {
             get
             {
-                return _saveCommand ?? (_saveCommand = new RelayCommand<ConfigModel>(async c =>
+                return _addShiftCommand ?? (_addShiftCommand = new RelayCommand(() =>
+                {
+                    // TODO: show 
+                }));
+            }
+        }
+
+        private ICommand _editShiftCommand;
+        public ICommand EditShiftCommand
+        {
+            get
+            {
+                return _editShiftCommand ?? (_editShiftCommand = new RelayCommand<ShiftModel>(shift =>
+                {
+                    // TODO: ...
+                }));
+            }
+        }
+
+        private ICommand _deleteShiftCommand;
+        public ICommand DeleteShiftCommand
+        {
+            get
+            {
+                return _deleteShiftCommand ?? (_deleteShiftCommand = new RelayCommand<int>(async id =>
                 {
                     try
                     {
                         IsLoading = true;
-                        await _configManager.SaveConfigAsync(c);
-                        Messenger.Default.Send(new CloseWindowNotificationMessage("Close Settings", WindowType.Settings));
+                        await _shiftManager.DeleteShiftAsync(id);
+                        var removedShift = ShiftItems.FirstOrDefault(x => x.Id == id);
+                        ShiftItems.Remove(removedShift);
                     }
                     catch (Exception ex)
                     {
@@ -88,6 +113,7 @@ namespace DHL.Report.TimeAttendance.ViewModel
                 }));
             }
         }
+
         #endregion
 
         #region Constructor
