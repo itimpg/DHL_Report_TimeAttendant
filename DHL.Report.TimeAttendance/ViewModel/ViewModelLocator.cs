@@ -80,30 +80,27 @@ namespace DHL.Report.TimeAttendance.ViewModel
             SimpleIoc.Default.Register<MainViewModel>();
             SimpleIoc.Default.Register<SettingViewModel>();
             SimpleIoc.Default.Register<AboutViewModel>();
+            SimpleIoc.Default.Register<ShiftViewModel>();
         }
 
         public MainViewModel Main
         {
-            get
-            {
-                return ServiceLocator.Current.GetInstance<MainViewModel>();
-            }
+            get { return ServiceLocator.Current.GetInstance<MainViewModel>(); }
         }
 
         public SettingViewModel Setting
         {
-            get
-            {
-                return ServiceLocator.Current.GetInstance<SettingViewModel>();
-            }
+            get { return ServiceLocator.Current.GetInstance<SettingViewModel>(); }
         }
 
         public AboutViewModel About
         {
-            get
-            {
-                return ServiceLocator.Current.GetInstance<AboutViewModel>();
-            }
+            get { return ServiceLocator.Current.GetInstance<AboutViewModel>(); }
+        }
+
+        public ShiftViewModel Shift
+        {
+            get { return ServiceLocator.Current.GetInstance<ShiftViewModel>(); }
         }
 
         public static void Cleanup()

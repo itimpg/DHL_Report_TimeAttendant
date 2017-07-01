@@ -12,10 +12,11 @@
         EnableDWMDropShadow="True"
         ResizeMode="NoResize"
         mc:Ignorable="d"
-        Title="Shift" Height="240" Width="420">
+        Title="Shift" Height="264" Width="420"
+        DataContext="{Binding Path=Shift, Source={StaticResource Locator}}">
     <Grid>
         <StackPanel Margin="10">
-            <GroupBox DataContext="{Binding}" Header="กะ">
+            <GroupBox DataContext="{Binding}" Header="รายละเอียดกะ">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="auto"/>
@@ -26,30 +27,34 @@
                         <RowDefinition/>
                         <RowDefinition/>
                         <RowDefinition/>
+                        <RowDefinition/>
                     </Grid.RowDefinitions>
 
                     <Label Grid.Row="0" Grid.Column="0" Content="Code"/>
-                    <TextBox Grid.Row="0" Grid.Column="1" />
+                    <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding Model.Code}"/>
 
-                    <Label Grid.Row="1" Grid.Column="0" Content="เวลาทำงาน"/>
-                    <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal">
-                        <Controls:TimePicker SelectedTime="{Binding WorkFrom}"/>
-                        <Label Content="ถึง"/>
-                        <Controls:TimePicker SelectedTime="{Binding WorkTo}"/>
-                    </StackPanel>
+                    <Label Grid.Row="1" Grid.Column="0" Content="ชื่อ"/>
+                    <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding Model.Name}"/>
 
-                    <Label Grid.Row="2" Grid.Column="0" Content="เวลาพักทานข้าว"/>
+                    <Label Grid.Row="2" Grid.Column="0" Content="เวลาทำงาน"/>
                     <StackPanel Grid.Row="2" Grid.Column="1" Orientation="Horizontal">
-                        <Controls:TimePicker SelectedTime="{Binding MealFrom}"/>
+                        <Controls:TimePicker SelectedTime="{Binding Model.WorkFrom}"/>
                         <Label Content="ถึง"/>
-                        <Controls:TimePicker SelectedTime="{Binding MealTo}"/>
+                        <Controls:TimePicker SelectedTime="{Binding Model.WorkTo}"/>
                     </StackPanel>
 
-                    <Label Grid.Row="3" Grid.Column="0" Content="เวลาพักเบรกอื่น ๆ"/>
+                    <Label Grid.Row="3" Grid.Column="0" Content="เวลาพักทานข้าว"/>
                     <StackPanel Grid.Row="3" Grid.Column="1" Orientation="Horizontal">
-                        <Controls:TimePicker SelectedTime="{Binding BreakFrom}"/>
+                        <Controls:TimePicker SelectedTime="{Binding Model.MealFrom}"/>
                         <Label Content="ถึง"/>
-                        <Controls:TimePicker SelectedTime="{Binding BreakTo}"/>
+                        <Controls:TimePicker SelectedTime="{Binding Model.MealTo}"/>
+                    </StackPanel>
+
+                    <Label Grid.Row="4" Grid.Column="0" Content="เวลาพักเบรกอื่น ๆ"/>
+                    <StackPanel Grid.Row="4" Grid.Column="1" Orientation="Horizontal">
+                        <Controls:TimePicker SelectedTime="{Binding Model.BreakFrom}"/>
+                        <Label Content="ถึง"/>
+                        <Controls:TimePicker SelectedTime="{Binding Model.BreakTo}"/>
                     </StackPanel>
                 </Grid>
             </GroupBox>
