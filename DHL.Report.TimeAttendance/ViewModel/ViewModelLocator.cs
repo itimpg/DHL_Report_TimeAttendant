@@ -1,9 +1,18 @@
+using AutoMapper;
+using DHL.Report.TimeAttendance.Data;
+using DHL.Report.TimeAttendance.Data.Entities;
 using DHL.Report.TimeAttendance.Managers;
 using DHL.Report.TimeAttendance.Managers.Interfaces;
+using DHL.Report.TimeAttendance.Models;
+using DHL.Report.TimeAttendance.Repositories;
+using DHL.Report.TimeAttendance.Repositories.Interfaces;
 using DHL.Report.TimeAttendance.Services;
 using DHL.Report.TimeAttendance.Services.Interfaces;
+using DHL.Report.TimeAttendance.TypeConverters;
 using GalaSoft.MvvmLight.Ioc;
 using Microsoft.Practices.ServiceLocation;
+using System;
+using System.IO;
 
 namespace DHL.Report.TimeAttendance.ViewModel
 {
@@ -20,10 +29,35 @@ namespace DHL.Report.TimeAttendance.ViewModel
         {
             ServiceLocator.SetLocatorProvider(() => SimpleIoc.Default);
 
+            Mapper.Initialize(cfg =>
+            {
+                cfg.CreateMap<TimeSpan, string>().ConvertUsing(new StringToTimeSpanTypeConverter());
+                cfg.CreateMap<string, TimeSpan>().ConvertUsing(new TimeSpanToStringTypeConverter());
+                cfg.CreateMap<Shift, ShiftModel>().ReverseMap();
+            });
+
             SimpleIoc.Default.Register<IDialogService, DialogService>();
             SimpleIoc.Default.Register<IXmlManager, XmlManager>();
             SimpleIoc.Default.Register<IAboutManager, AboutManager>();
-            SimpleIoc.Default.Register<IShiftManager, ShiftManager>();
+
+            SimpleIoc.Default.Register<IMyContext>(() =>
+            {
+                string connectionString = Path.Combine(
+                    AppDomain.CurrentDomain.BaseDirectory, "dhl_timeattencance_report.db");
+                return new MyContext(connectionString);
+            });
+
+            SimpleIoc.Default.Register<IShiftRepository>(() =>
+            {
+                return new ShiftRepository(
+                    SimpleIoc.Default.GetInstance<IMyContext>());
+            });
+
+            SimpleIoc.Default.Register<IShiftManager>(() =>
+            {
+                return new ShiftManager(
+                    SimpleIoc.Default.GetInstance<IShiftRepository>());
+            });
 
             SimpleIoc.Default.Register<IConfigManager>(() =>
             {

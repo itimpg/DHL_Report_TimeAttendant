@@ -12,6 +12,13 @@ namespace DHL.Report.TimeAttendance.Models
             set { Set(() => Id, ref _id, value); }
         }
 
+        private string _name;
+        public string Name
+        {
+            get { return _name; }
+            set { Set(() => Name, ref _name, value); }
+        }
+
         private string _code;
         public string Code
         {
