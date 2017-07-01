@@ -27,8 +27,9 @@
 
             <GroupBox Header="ฐานข้อมูลของระบบลงเวลาเข้าออก:">
                 <StackPanel Orientation="Horizontal">
-                    <TextBox IsReadOnly="True" Text="C:/database.mdb" Width="400"/>
+                    <TextBox IsReadOnly="True" Text="{Binding ReportCriteria.AccessFilePath}" Width="400"/>
                     <Button Content="Browse..." Width="80"
+                            Command="{Binding SelectDbFileCommand}"
                             Style="{DynamicResource SquareButtonStyle}"/>
                     <Label Content="Password:"/>
                     <TextBox Width="120"/>
@@ -37,34 +38,38 @@
 
             <GroupBox Header="ไฟล์ Excel จากระบบ HR:">
                 <StackPanel Orientation="Horizontal">
-                    <TextBox IsReadOnly="True" Text="C:/HRExcel.xlsx" Width="400"/>
+                    <TextBox IsReadOnly="True" Text="{Binding ReportCriteria.ExcelFilePath}" Width="400"/>
                     <Button Content="Browse..." Width="80"
+                            Command="{Binding SelectExcelCommand}"
                             Style="{DynamicResource SquareButtonStyle}"/>
                 </StackPanel>
             </GroupBox>
 
             <GroupBox Header="โฟลเดอร์สำหรับเก็บรายงาน:">
                 <StackPanel Orientation="Horizontal">
-                    <TextBox IsReadOnly="True" Text="C:/Reports" Width="400"/>
+                    <TextBox IsReadOnly="True" Text="{Binding ReportCriteria.OutputDir}" Width="400"/>
                     <Button Content="Browse..." Width="80"
+                            Command="{Binding SetOutputDirCommand}"
                             Style="{DynamicResource SquareButtonStyle}"/>
                 </StackPanel>
             </GroupBox>
-            
+
             <GroupBox Header="รายงาน">
                 <StackPanel>
-                    <CheckBox Margin="0,5" Content="รายงานประจำเดือน"/>
-                    <CheckBox Margin="0,5" Content="รายงานประจำวัน"/>
-                    <CheckBox Margin="0,5" Content="รายงานเฉลี่ย"/>
-                    <CheckBox Margin="0,5" Content="รายงานประจำวันรวม"/>
+                    <CheckBox Margin="0,5" Content="รายงานประจำเดือน" IsChecked="{Binding ReportCriteria.IsOption1}"/>
+                    <CheckBox Margin="0,5" Content="รายงานประจำวัน" IsChecked="{Binding ReportCriteria.IsOption2}"/>
+                    <CheckBox Margin="0,5" Content="รายงานเฉลี่ย" IsChecked="{Binding ReportCriteria.IsOption3}"/>
+                    <CheckBox Margin="0,5" Content="รายงานประจำวันรวม" IsChecked="{Binding ReportCriteria.IsOption4}"/>
                 </StackPanel>
             </GroupBox>
 
             <StackPanel Margin="5">
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
                     <Button Style="{StaticResource SquareButtonStyle}"
-                        Width="120"
-                        Content="สร้างรายงาน"/>
+                            Width="120"
+                            Command="{Binding GenerateReportCommand}"
+                            CommandParameter="{Binding ReportCriteria}"
+                            Content="สร้างรายงาน"/>
                 </StackPanel>
             </StackPanel>
         </StackPanel>

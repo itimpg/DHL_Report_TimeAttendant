@@ -3,7 +3,7 @@ using DHL.Report.TimeAttendance.Messages;
 using DHL.Report.TimeAttendance.Models;
 using DHL.Report.TimeAttendance.Services.Interfaces;
 using GalaSoft.MvvmLight;
-using GalaSoft.MvvmLight.Command;
+using GalaSoft.MvvmLight.CommandWpf;
 using GalaSoft.MvvmLight.Messaging;
 using System;
 using System.Windows.Input;
@@ -63,12 +63,13 @@ namespace DHL.Report.TimeAttendance.ViewModel
         {
             get
             {
-                return _generateReportCommand ?? (_generateReportCommand = new RelayCommand(async () =>
+                return _generateReportCommand ?? (_generateReportCommand = new RelayCommand<ReportCriteriaModel>((criteria) =>
                 {
                     try
                     {
                         IsLoading = true;
-                        await _reportManager.CreateReport1Async(null, null);
+                        // TODO: generate reports
+                        //await _reportManager.CreateReport1Async(null, null);
                         _dialogService.ShowMessage("Success", "Finish");
                     }
                     catch (Exception ex)
@@ -78,6 +79,61 @@ namespace DHL.Report.TimeAttendance.ViewModel
                     finally
                     {
                         IsLoading = false;
+                    }
+                }, (criteria) =>
+                {
+                    return criteria != null &&
+                        !string.IsNullOrEmpty(criteria.AccessFilePath) &&
+                        !string.IsNullOrEmpty(criteria.ExcelFilePath) &&
+                        !string.IsNullOrEmpty(criteria.OutputDir) &&
+                        (criteria.IsOption1 || criteria.IsOption2 || criteria.IsOption3 || criteria.IsOption4);
+                }));
+            }
+        }
+
+        private ICommand _selectDbFileCommand;
+        public ICommand SelectDbFileCommand
+        {
+            get
+            {
+                return _selectDbFileCommand ?? (_selectDbFileCommand = new RelayCommand(() =>
+                {
+                    string selectedFilePath;
+                    if (_dialogService.BrowseFile(out selectedFilePath, "Access Files|*.mdb;*.accdb"))
+                    {
+                        ReportCriteria.AccessFilePath = selectedFilePath;
+                    }
+                }));
+            }
+        }
+
+        private ICommand _selectExcelCommand;
+        public ICommand SelectExcelCommand
+        {
+            get
+            {
+                return _selectExcelCommand ?? (_selectExcelCommand = new RelayCommand(() =>
+                {
+                    string selectedFilePath;
+                    if (_dialogService.BrowseFile(out selectedFilePath, "Excel Files|*.xls;*.xlsx"))
+                    {
+                        ReportCriteria.ExcelFilePath = selectedFilePath;
+                    }
+                }));
+            }
+        }
+
+        private ICommand _setOutputDirCommand;
+        public ICommand SetOutputDirCommand
+        {
+            get
+            {
+                return _setOutputDirCommand ?? (_setOutputDirCommand = new RelayCommand(() =>
+                {
+                    string selectedPath;
+                    if (_dialogService.BrowseFolder(out selectedPath))
+                    {
+                        ReportCriteria.OutputDir = selectedPath;
                     }
                 }));
             }
@@ -89,6 +145,7 @@ namespace DHL.Report.TimeAttendance.ViewModel
         {
             _reportManager = reportManager;
             _dialogService = dialogService;
+            ReportCriteria = new ReportCriteriaModel();
         }
         #endregion  
     }

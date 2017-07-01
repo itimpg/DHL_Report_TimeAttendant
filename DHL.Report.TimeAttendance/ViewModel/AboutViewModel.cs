@@ -1,7 +1,7 @@
 ﻿using DHL.Report.TimeAttendance.Managers.Interfaces;
 using DHL.Report.TimeAttendance.Models;
 using GalaSoft.MvvmLight;
-using GalaSoft.MvvmLight.Command;
+using GalaSoft.MvvmLight.CommandWpf;
 using System.Windows.Input;
 
 namespace DHL.Report.TimeAttendance.ViewModel

@@ -18,6 +18,13 @@ namespace DHL.Report.TimeAttendance.Models
             set { Set(() => ExcelFilePath, ref _excelFilePath, value); }
         }
 
+        private string _outputDir;
+        public string OutputDir
+        {
+            get { return _outputDir; }
+            set { Set(() => OutputDir, ref _outputDir, value); }
+        }
+
         private bool _isOption1;
         public bool IsOption1
         {

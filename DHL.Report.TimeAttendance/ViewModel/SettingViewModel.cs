@@ -3,7 +3,7 @@ using DHL.Report.TimeAttendance.Messages;
 using DHL.Report.TimeAttendance.Models;
 using DHL.Report.TimeAttendance.Services.Interfaces;
 using GalaSoft.MvvmLight;
-using GalaSoft.MvvmLight.Command;
+using GalaSoft.MvvmLight.CommandWpf;
 using GalaSoft.MvvmLight.Messaging;
 using System;
 using System.Linq;

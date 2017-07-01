@@ -23,6 +23,45 @@ namespace DHL.Report.TimeAttendance.Services
             }
         }
 
+        public bool BrowseFile(out string selectedFilePath, string extensionFilter)
+        {
+            selectedFilePath = string.Empty;
+            var dlg = new Forms.OpenFileDialog
+            {
+                Multiselect = false,
+                Filter = extensionFilter,
+            };
+            var result = dlg.ShowDialog();
+            if (result == Forms.DialogResult.OK)
+            {
+                selectedFilePath = dlg.FileName;
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        public bool SaveFile(out string savedFilePath, string extensionFilter)
+        {
+            savedFilePath = string.Empty;
+            var dlg = new Forms.SaveFileDialog()
+            {
+                Filter = extensionFilter,
+            };
+            var result = dlg.ShowDialog();
+            if (result == Forms.DialogResult.OK)
+            {
+                savedFilePath = dlg.FileName;
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
         public void ShowMessage(string message, string caption)
         {
             MessageBox.Show(message, caption);
