@@ -22,6 +22,9 @@ namespace DHL.Report.TimeAttendance
                 case WindowType.Settings:
                     window = new SettingsView();
                     break;
+                case WindowType.Shift:
+                    window = new AddEditShiftView();
+                    break;
                 case WindowType.About:
                     window = new AboutView();
                     break;

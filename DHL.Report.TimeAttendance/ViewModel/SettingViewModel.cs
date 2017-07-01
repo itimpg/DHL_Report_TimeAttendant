@@ -63,7 +63,7 @@ namespace DHL.Report.TimeAttendance.ViewModel
                }));
             }
         }
-        
+
         private ICommand _addShiftCommand;
         public ICommand AddShiftCommand
         {
@@ -71,7 +71,8 @@ namespace DHL.Report.TimeAttendance.ViewModel
             {
                 return _addShiftCommand ?? (_addShiftCommand = new RelayCommand(() =>
                 {
-                    // TODO: show 
+                    // TODO: init model to send
+                    Messenger.Default.Send(new OpenWindowNotificationMessage("Open Config", WindowType.Shift));
                 }));
             }
         }
@@ -83,7 +84,8 @@ namespace DHL.Report.TimeAttendance.ViewModel
             {
                 return _editShiftCommand ?? (_editShiftCommand = new RelayCommand<ShiftModel>(shift =>
                 {
-                    // TODO: ...
+                    // TODO: init model to send
+                    Messenger.Default.Send(new OpenWindowNotificationMessage("Open Config", WindowType.Shift));
                 }));
             }
         }
@@ -97,10 +99,13 @@ namespace DHL.Report.TimeAttendance.ViewModel
                 {
                     try
                     {
-                        IsLoading = true;
-                        await _shiftManager.DeleteShiftAsync(id);
-                        var removedShift = ShiftItems.FirstOrDefault(x => x.Id == id);
-                        ShiftItems.Remove(removedShift);
+                        if (_dialogService.ShowConfirmationMessage("Do you want to delete this shift?", "Comfirm Delete"))
+                        {
+                            IsLoading = true;
+                            await _shiftManager.DeleteShiftAsync(id);
+                            var removedShift = ShiftItems.FirstOrDefault(x => x.Id == id);
+                            ShiftItems.Remove(removedShift);
+                        }
                     }
                     catch (Exception ex)
                     {
