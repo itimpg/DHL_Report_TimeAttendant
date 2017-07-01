@@ -14,7 +14,7 @@
         EnableDWMDropShadow="True"
         Title="Settings" 
         Height="460" 
-        Width="430"
+        MinWidth="430"
         WindowState="Maximized"
         DataContext="{Binding Path=Setting, Source={StaticResource Locator}}">
 
@@ -37,77 +37,74 @@
                             Width="120" Content="เพิ่มกะ"/>
                 </StackPanel>
             </StackPanel>
-            <ListView Grid.Row="1" ItemsSource="{Binding ShiftItems}">
-                <ListView.ItemContainerStyle>
-                    <Style TargetType="{x:Type ListViewItem}">
-                        <Setter Property="Focusable" Value="False"/>
-                    </Style>
-                </ListView.ItemContainerStyle>
-                <ListView.ItemTemplate>
-                    <DataTemplate>
-                        <GroupBox DataContext="{Binding}">
-                            <GroupBox.Header>
-                                <Grid>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="*"/>
-                                        <ColumnDefinition Width="auto"/>
-                                    </Grid.ColumnDefinitions>
-                                    <StackPanel Grid.Column="0" Orientation="Horizontal">
-                                        <Label Content="{Binding Code}"/>
-                                        <Label Content="{Binding Name}"/>
-                                    </StackPanel>
-                                    <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right">
-                                        <Button HorizontalAlignment="Right" Style="{StaticResource MetroBaseWindowButtonStyle}" 
-                                                Command="{Binding DataContext.EditShiftCommand, RelativeSource={RelativeSource AncestorType={x:Type ListBox}}}"
+            <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+                <ItemsControl ItemsSource="{Binding ShiftItems}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <GroupBox DataContext="{Binding}">
+                                <GroupBox.Header>
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="auto"/>
+                                        </Grid.ColumnDefinitions>
+                                        <StackPanel Grid.Column="0" Orientation="Horizontal">
+                                            <Label Content="{Binding Code}"/>
+                                            <Label Content="{Binding Name}"/>
+                                        </StackPanel>
+                                        <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right">
+                                            <Button HorizontalAlignment="Right" Style="{StaticResource MetroBaseWindowButtonStyle}" 
+                                                Command="{Binding DataContext.EditShiftCommand, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}"
                                                 CommandParameter="{Binding}"
                                                 Width="40"
                                                 Content="แก้ไข"/>
-                                        <Button HorizontalAlignment="Right" Style="{StaticResource MetroBaseWindowButtonStyle}" 
-                                                Command="{Binding DataContext.DeleteShiftCommand, RelativeSource={RelativeSource AncestorType={x:Type ListBox}}}"
+                                            <Button HorizontalAlignment="Right" Style="{StaticResource MetroBaseWindowButtonStyle}" 
+                                                Command="{Binding DataContext.DeleteShiftCommand, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}"
                                                 CommandParameter="{Binding Path=Id}"
                                                 Width="40"
                                                 Content="ลบ"/>
+                                        </StackPanel>
+                                    </Grid>
+                                </GroupBox.Header>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="auto"/>
+                                        <ColumnDefinition Width="auto"/>
+                                        <ColumnDefinition Width="auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition/>
+                                        <RowDefinition/>
+                                        <RowDefinition/>
+                                        <RowDefinition/>
+                                    </Grid.RowDefinitions>
+
+                                    <Label Grid.Row="1" Grid.Column="0" Content="เวลาทำงาน"/>
+                                    <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal">
+                                        <Controls:TimePicker SelectedTime="{Binding WorkFrom}" IsReadOnly="True"/>
+                                        <Label Content="ถึง"/>
+                                        <Controls:TimePicker SelectedTime="{Binding WorkTo}" IsReadOnly="True"/>
+                                    </StackPanel>
+
+                                    <Label Grid.Row="2" Grid.Column="0" Content="เวลาพักทานข้าว"/>
+                                    <StackPanel Grid.Row="2" Grid.Column="1" Orientation="Horizontal">
+                                        <Controls:TimePicker SelectedTime="{Binding MealFrom}" IsReadOnly="True"/>
+                                        <Label Content="ถึง"/>
+                                        <Controls:TimePicker SelectedTime="{Binding MealTo}" IsReadOnly="True"/>
+                                    </StackPanel>
+
+                                    <Label Grid.Row="3" Grid.Column="0" Content="เวลาพักเบรกอื่น ๆ"/>
+                                    <StackPanel Grid.Row="3" Grid.Column="1" Orientation="Horizontal">
+                                        <Controls:TimePicker SelectedTime="{Binding BreakFrom}" IsReadOnly="True"/>
+                                        <Label Content="ถึง"/>
+                                        <Controls:TimePicker SelectedTime="{Binding BreakTo}" IsReadOnly="True"/>
                                     </StackPanel>
                                 </Grid>
-                            </GroupBox.Header>
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="auto"/>
-                                    <ColumnDefinition Width="auto"/>
-                                    <ColumnDefinition Width="auto"/>
-                                </Grid.ColumnDefinitions>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition/>
-                                    <RowDefinition/>
-                                    <RowDefinition/>
-                                    <RowDefinition/>
-                                </Grid.RowDefinitions>
-
-                                <Label Grid.Row="1" Grid.Column="0" Content="เวลาทำงาน"/>
-                                <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal">
-                                    <Controls:TimePicker SelectedTime="{Binding WorkFrom}" IsReadOnly="True"/>
-                                    <Label Content="ถึง"/>
-                                    <Controls:TimePicker SelectedTime="{Binding WorkTo}" IsReadOnly="True"/>
-                                </StackPanel>
-
-                                <Label Grid.Row="2" Grid.Column="0" Content="เวลาพักทานข้าว"/>
-                                <StackPanel Grid.Row="2" Grid.Column="1" Orientation="Horizontal">
-                                    <Controls:TimePicker SelectedTime="{Binding MealFrom}" IsReadOnly="True"/>
-                                    <Label Content="ถึง"/>
-                                    <Controls:TimePicker SelectedTime="{Binding MealTo}" IsReadOnly="True"/>
-                                </StackPanel>
-
-                                <Label Grid.Row="3" Grid.Column="0" Content="เวลาพักเบรกอื่น ๆ"/>
-                                <StackPanel Grid.Row="3" Grid.Column="1" Orientation="Horizontal">
-                                    <Controls:TimePicker SelectedTime="{Binding BreakFrom}" IsReadOnly="True"/>
-                                    <Label Content="ถึง"/>
-                                    <Controls:TimePicker SelectedTime="{Binding BreakTo}" IsReadOnly="True"/>
-                                </StackPanel>
-                            </Grid>
-                        </GroupBox>
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-            </ListView>
+                            </GroupBox>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </ScrollViewer>
         </Grid>
 
         <Grid Background="Black" Opacity="0.7" Visibility="{Binding IsLoading, Converter={StaticResource VisibleConverter}}">
