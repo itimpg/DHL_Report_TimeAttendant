@@ -9,7 +9,7 @@
 ; NOTE: The value of AppId uniquely identifies this application.
 ; Do not use the same AppId value in installers for other applications.
 ; (To generate a new GUID, click Tools | Generate GUID inside the IDE.)
-AppId={{C39C92DE-F173-4DD4-BD28-5BB92E2DECCC}
+AppId={{5376DA16-C189-4DE7-8736-8356DE0D81F8}
 AppName={#MyAppName}
 AppVersion={#MyAppVersion}
 ;AppVerName={#MyAppName} {#MyAppVersion}
@@ -51,9 +51,9 @@ Source: "D:\DHL_Report_TimeAttendant\DHL.Report.TimeAttendance\bin\Release\Syste
 Source: "D:\DHL_Report_TimeAttendant\DHL.Report.TimeAttendance\bin\Release\System.Data.SQLite.EF6.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "D:\DHL_Report_TimeAttendant\DHL.Report.TimeAttendance\bin\Release\System.Data.SQLite.Linq.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "D:\DHL_Report_TimeAttendant\DHL.Report.TimeAttendance\bin\Release\System.Data.SQLite.xml"; DestDir: "{app}"; Flags: ignoreversion
-Source: "D:\DHL_Report_TimeAttendant\DHL.Report.TimeAttendance\bin\Release\System.Windows.Interactivity.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "D:\DHL_Report_TimeAttendant\DHL.Report.TimeAttendance\bin\Release\x64\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
-Source: "D:\DHL_Report_TimeAttendant\DHL.Report.TimeAttendance\bin\Release\x86\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "D:\DHL_Report_TimeAttendant\DHL.Report.TimeAttendance\bin\Release\System.Windows.Interactivity.dll"; DestDir: "{app}"; Flags: ignoreversion  
+Source: "D:\DHL_Report_TimeAttendant\DHL.Report.TimeAttendance\bin\Release\x64\*"; DestDir: "{app}\x64"; Flags: ignoreversion 
+Source: "D:\DHL_Report_TimeAttendant\DHL.Report.TimeAttendance\bin\Release\x86\*"; DestDir: "{app}\x86"; Flags: ignoreversion 
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Icons]
