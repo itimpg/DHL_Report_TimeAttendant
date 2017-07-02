@@ -1,5 +1,4 @@
 ﻿using GalaSoft.MvvmLight;
-using System;
 
 namespace DHL.Report.TimeAttendance.Models
 {

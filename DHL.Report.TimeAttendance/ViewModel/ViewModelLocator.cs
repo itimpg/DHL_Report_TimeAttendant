@@ -61,7 +61,7 @@ namespace DHL.Report.TimeAttendance.ViewModel
 
             SimpleIoc.Default.Register<IConfigManager>(() =>
             {
-                string appPath = System.AppDomain.CurrentDomain.BaseDirectory;
+                string appPath = AppDomain.CurrentDomain.BaseDirectory;
 
                 return new ConfigManager(
                     SimpleIoc.Default.GetInstance<IXmlManager>(),
@@ -70,7 +70,7 @@ namespace DHL.Report.TimeAttendance.ViewModel
 
             SimpleIoc.Default.Register<IReportManager>(() =>
             {
-                string appPath = System.AppDomain.CurrentDomain.BaseDirectory;
+                string appPath = AppDomain.CurrentDomain.BaseDirectory;
 
                 return new ReportManager(
                     SimpleIoc.Default.GetInstance<IShiftManager>(),

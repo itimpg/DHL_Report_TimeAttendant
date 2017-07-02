@@ -9,6 +9,8 @@ using System;
 using System.Linq;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
+using System.Threading.Tasks;
+using DHL.Report.TimeAttendance.Models.Session;
 
 namespace DHL.Report.TimeAttendance.ViewModel
 {
@@ -40,27 +42,31 @@ namespace DHL.Report.TimeAttendance.ViewModel
             {
                 return _onLoadCommand ?? (_onLoadCommand = new RelayCommand(async () =>
                {
-                   try
-                   {
-                       IsLoading = true;
-
-                       var items = await _shiftManager.GetShiftsAsync();
-
-                       ShiftItems.Clear();
-                       foreach (var item in items)
-                       {
-                           ShiftItems.Add(item);
-                       }
-                   }
-                   catch (Exception ex)
-                   {
-                       _dialogService.ShowMessage(ex.Message, "Error");
-                   }
-                   finally
-                   {
-                       IsLoading = false;
-                   }
+                   await LoadShifts();
                }));
+            }
+        }
+
+        private async Task LoadShifts()
+        {
+            try
+            {
+                IsLoading = true;
+
+                var items = await _shiftManager.GetShiftsAsync();
+                ShiftItems.Clear();
+                foreach (var item in items)
+                {
+                    ShiftItems.Add(item);
+                }
+            }
+            catch (Exception ex)
+            {
+                _dialogService.ShowMessage(ex.Message, "Error");
+            }
+            finally
+            {
+                IsLoading = false;
             }
         }
 
@@ -71,7 +77,7 @@ namespace DHL.Report.TimeAttendance.ViewModel
             {
                 return _addShiftCommand ?? (_addShiftCommand = new RelayCommand(() =>
                 {
-                    // TODO: init model to send
+                    AppSessionModel.Instance().ShiftId = -1;
                     Messenger.Default.Send(new OpenWindowNotificationMessage("Open Config", WindowType.Shift));
                 }));
             }
@@ -84,7 +90,7 @@ namespace DHL.Report.TimeAttendance.ViewModel
             {
                 return _editShiftCommand ?? (_editShiftCommand = new RelayCommand<ShiftModel>(shift =>
                 {
-                    // TODO: init model to send
+                    AppSessionModel.Instance().ShiftId = shift.Id;
                     Messenger.Default.Send(new OpenWindowNotificationMessage("Open Config", WindowType.Shift));
                 }));
             }
@@ -132,6 +138,14 @@ namespace DHL.Report.TimeAttendance.ViewModel
             _dialogService = dialogService;
 
             ShiftItems = new ObservableCollection<ShiftModel>();
+
+            Messenger.Default.Register<DataChangedNotificationMessage>(this, async (msg) =>
+            {
+                if (msg.DataChanged == DataChangedType.Shift)
+                {
+                    await LoadShifts();
+                }
+            });
         }
         #endregion
     }

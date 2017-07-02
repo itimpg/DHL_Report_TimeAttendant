@@ -107,8 +107,10 @@
     <Compile Include="Managers\Interfaces\IShiftManager.cs" />
     <Compile Include="Managers\ShiftManager.cs" />
     <Compile Include="Messages\CloseWindowNotificationMessage.cs" />
+    <Compile Include="Messages\DataChangedNotificationMessage.cs" />
     <Compile Include="Messages\OpenWindowNotificationMessage.cs" />
     <Compile Include="Models\ReportCriteriaModel.cs" />
+    <Compile Include="Models\Session\AppSessionModel.cs" />
     <Compile Include="Models\ShiftModel.cs" />
     <Compile Include="Data\ShiftRepository.cs" />
     <Compile Include="Services\DialogService.cs" />

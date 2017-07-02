@@ -2,10 +2,10 @@
 using System.Threading.Tasks;
 using DHL.Report.TimeAttendance.Models;
 using System.IO;
-using System;
 
 namespace DHL.Report.TimeAttendance.Managers
 {
+    // unused
     public class ConfigManager : IConfigManager
     {
         #region Fields & Properties

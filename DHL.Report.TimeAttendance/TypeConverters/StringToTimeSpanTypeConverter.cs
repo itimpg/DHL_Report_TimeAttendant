@@ -7,7 +7,7 @@ namespace DHL.Report.TimeAttendance.TypeConverters
     {
         public string Convert(TimeSpan source, string destination, ResolutionContext context)
         {
-            return source.ToString("hh:mm");
+            return source.ToString(@"hh\:mm");
         }
     }
 }

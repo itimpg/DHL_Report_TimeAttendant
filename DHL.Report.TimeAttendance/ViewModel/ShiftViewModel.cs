@@ -1,8 +1,11 @@
 ﻿using DHL.Report.TimeAttendance.Managers.Interfaces;
+using DHL.Report.TimeAttendance.Messages;
 using DHL.Report.TimeAttendance.Models;
+using DHL.Report.TimeAttendance.Models.Session;
 using DHL.Report.TimeAttendance.Services.Interfaces;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.CommandWpf;
+using GalaSoft.MvvmLight.Messaging;
 using System;
 using System.Windows.Input;
 
@@ -23,6 +26,13 @@ namespace DHL.Report.TimeAttendance.ViewModel
             set { Set(() => IsLoading, ref _isLoading, value); }
         }
 
+        private string _title;
+        public string Title
+        {
+            get { return _title; }
+            set { Set(() => Title, ref _title, value); }
+        }
+
         private ShiftModel _model;
         public ShiftModel Model
         {
@@ -32,6 +42,40 @@ namespace DHL.Report.TimeAttendance.ViewModel
         #endregion
 
         #region Command
+        private ICommand _onLoadCommand;
+        public ICommand OnLoadCommand
+        {
+            get
+            {
+                return _onLoadCommand ?? (_onLoadCommand = new RelayCommand(async () =>
+                {
+                    try
+                    {
+                        IsLoading = true;
+
+                        int shiftId = AppSessionModel.Instance().ShiftId;
+                        if (shiftId > 0 && (Model = await _shiftManager.GetShiftAsync(shiftId)) != null)
+                        {
+                            Title = "แก้ไขข้อมูลกะ";
+                        }
+                        else
+                        {
+                            Title = "เพิ่มกะใหม่";
+                            Model = new ShiftModel();
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        _dialogService.ShowMessage(ex.Message, "Error");
+                    }
+                    finally
+                    {
+                        IsLoading = false;
+                    }
+                }));
+            }
+        }
+
         private ICommand _saveCommand;
         public ICommand SaveCommand
         {
@@ -43,8 +87,9 @@ namespace DHL.Report.TimeAttendance.ViewModel
                     {
                         IsLoading = true;
                         await _shiftManager.SaveShiftAsync(model);
-                        // TODO: close this 
-                        // TODO: update main
+
+                        Messenger.Default.Send(new DataChangedNotificationMessage("Camera Changed", DataChangedType.Shift));
+                        Messenger.Default.Send(new CloseWindowNotificationMessage("Closed", WindowType.Shift));
                     }
                     catch (Exception ex)
                     {

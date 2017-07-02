@@ -40,9 +40,12 @@ namespace DHL.Report.TimeAttendance.Repositories
         public async Task EditShiftAsync(Shift shift)
         {
             var s = _context.Shifts.First(x => x.Id == shift.Id);
-
-            // TODO: implement here 
-
+            s.Code = shift.Code;
+            s.Name = shift.Name;
+            s.WorkFrom = shift.WorkFrom;
+            s.WorkTo = shift.WorkTo;
+            s.MealFrom = shift.MealFrom;
+            s.MealTo = shift.MealTo;
             await _context.SaveChangesAsync();
         }
 

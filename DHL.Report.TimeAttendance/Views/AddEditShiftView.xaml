@@ -4,6 +4,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
         xmlns:local="clr-namespace:DHL.Report.TimeAttendance.Views"
         xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
         BorderBrush="{DynamicResource AccentColorBrush}"
@@ -12,8 +13,13 @@
         EnableDWMDropShadow="True"
         ResizeMode="NoResize"
         mc:Ignorable="d"
-        Title="Shift" Height="264" Width="420"
+        Title="{Binding Title}" Height="264" Width="420"
         DataContext="{Binding Path=Shift, Source={StaticResource Locator}}">
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Loaded">
+            <i:InvokeCommandAction Command="{Binding OnLoadCommand}" />
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
     <Grid>
         <StackPanel Margin="10">
             <GroupBox DataContext="{Binding}" Header="รายละเอียดกะ">
@@ -61,8 +67,9 @@
             <StackPanel Grid.Row="0" Margin="5">
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
                     <Button Style="{StaticResource SquareButtonStyle}"
-                        Width="120"
-                        Content="บันทึก"/>
+                            Command="{Binding SaveCommand}"
+                            CommandParameter="{Binding Model}"
+                            Width="120" Content="บันทึก"/>
                 </StackPanel>
             </StackPanel>
         </StackPanel>

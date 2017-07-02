@@ -47,7 +47,7 @@ namespace DHL.Report.TimeAttendance.Managers
         public async Task<int> SaveShiftAsync(ShiftModel shift)
         {
             var s = Mapper.Map<Shift>(shift);
-            if (shift.Id > 0)
+            if (shift.Id == 0)
             {
                 return await _shiftRepository.AddShiftAsync(s);
             }
