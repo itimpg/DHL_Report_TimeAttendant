@@ -101,8 +101,7 @@ namespace DHL.Report.TimeAttendance.ViewModel
                     }
                 }, (model) =>
                 {
-                    // TODO: validate model before allow save
-                    return true;
+                    return model != null && !string.IsNullOrEmpty(model.Code) && !string.IsNullOrEmpty(model.Name);
                 }));
             }
         }
