@@ -73,7 +73,7 @@
                 </StackPanel>
             </StackPanel>
         </StackPanel>
-        <Grid Background="Black" Opacity="0" Visibility="{Binding IsLoading, Converter={StaticResource VisibleConverter}}">
+        <Grid Background="Black" Opacity="0.7" Visibility="{Binding IsLoading, Converter={StaticResource VisibleConverter}}">
             <Controls:ProgressRing Foreground="{DynamicResource AccentColorBrush}"/>
         </Grid>
     </Grid>
