@@ -8,7 +8,7 @@
         xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
         mc:Ignorable="d"
         Title="DHL Time Attendant Reporting" 
-        Height="480"
+        Height="510"
         Width="720"
         ResizeMode="NoResize"
         BorderBrush="{DynamicResource AccentColorBrush}"
@@ -56,6 +56,10 @@
 
             <GroupBox Header="รายงาน">
                 <StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <Label Content="เลือกวัน/เดือน: "/>
+                        <DatePicker SelectedDate="{Binding ReportCriteria.SearchDate}" Width="200"/>
+                    </StackPanel>
                     <CheckBox Margin="0,5" Content="รายงานประจำเดือน" IsChecked="{Binding ReportCriteria.IsOption1}"/>
                     <CheckBox Margin="0,5" Content="รายงานประจำวัน" IsChecked="{Binding ReportCriteria.IsOption2}"/>
                     <CheckBox Margin="0,5" Content="รายงานเฉลี่ย" IsChecked="{Binding ReportCriteria.IsOption3}"/>

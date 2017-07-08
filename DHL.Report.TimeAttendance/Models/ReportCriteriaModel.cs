@@ -1,4 +1,5 @@
 ﻿using GalaSoft.MvvmLight;
+using System;
 
 namespace DHL.Report.TimeAttendance.Models
 {
@@ -30,6 +31,13 @@ namespace DHL.Report.TimeAttendance.Models
         {
             get { return _outputDir; }
             set { Set(() => OutputDir, ref _outputDir, value); }
+        }
+
+        private DateTime _searchDate;
+        public DateTime SearchDate
+        {
+            get { return _searchDate; }
+            set { Set(() => SearchDate, ref _searchDate, value); }
         }
 
         private bool _isOption1;

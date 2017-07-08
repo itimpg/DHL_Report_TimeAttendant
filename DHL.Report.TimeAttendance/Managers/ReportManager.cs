@@ -2,6 +2,7 @@
 using DHL.Report.TimeAttendance.Managers.Interfaces;
 using DHL.Report.TimeAttendance.Models;
 using System.Linq;
+using System;
 
 namespace DHL.Report.TimeAttendance.Managers
 {
@@ -11,17 +12,20 @@ namespace DHL.Report.TimeAttendance.Managers
         private readonly IExcelDataManager _excelDataManager;
         private readonly IAccessDataManager _accessDataManager;
         private readonly IShiftManager _shiftManager;
+        private readonly IExcelReportManager _excelReportManager;
         #endregion
 
         #region Constructor
         public ReportManager(
             IExcelDataManager excelDataManager,
             IAccessDataManager accessDataManager,
-            IShiftManager shiftManager)
+            IShiftManager shiftManager,
+            IExcelReportManager excelReportManager)
         {
             _excelDataManager = excelDataManager;
             _accessDataManager = accessDataManager;
             _shiftManager = shiftManager;
+            _excelReportManager = excelReportManager;
         }
         #endregion
 
@@ -30,9 +34,18 @@ namespace DHL.Report.TimeAttendance.Managers
             //var hrItems = _excelDataManager.GetHrSource(criteria.ExcelFilePath);
             //var shiftItem = await _shiftManager.GetShiftsAsync();
 
-            var dbItems = (await _accessDataManager.ReadData(criteria.AccessFilePath, criteria.AccessPassword)).ToList();
+            DateTime searchDate = criteria.SearchDate;
+            DateTime searchFrom = new DateTime(searchDate.Year, searchDate.Month, 1);
+            DateTime searchTo = searchFrom.AddMonths(1).AddDays(-1);
 
-            string a = "";
+            var dbItems = (await _accessDataManager.GetEmployeeSwipeInfo(
+                criteria.AccessFilePath,
+                criteria.AccessPassword,
+                searchFrom,
+                searchTo
+                )).ToList();
+
+            var total = dbItems.Count();
         }
     }
 }

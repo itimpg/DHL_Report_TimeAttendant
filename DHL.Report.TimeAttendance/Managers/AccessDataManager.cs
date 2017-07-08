@@ -12,7 +12,7 @@ namespace DHL.Report.TimeAttendance.Managers
 {
     public class AccessDataManager : IAccessDataManager
     {
-        public async Task<IEnumerable<EmployeeSwipeInfoModel>> ReadData(string filePath, string password)
+        public async Task<IEnumerable<EmployeeSwipeInfoModel>> GetEmployeeSwipeInfo(string filePath, string password, DateTime dateFrom, DateTime dateTo)
         {
             if (string.IsNullOrEmpty(filePath))
             {
@@ -44,8 +44,19 @@ namespace DHL.Report.TimeAttendance.Managers
                         INNER JOIN t_d_SwipeRecord sr 
                             ON  c.f_ConsumerID = sr.f_ConsumerID 
                             AND c.f_CardNo = sr.f_CardNo
+                        WHERE sr.f_ReadDate BETWEEN @from AND @to
                         ORDER BY sr.f_ReadDate";
                     var command = new OleDbCommand(query, connection);
+                    command.Parameters.Add(new OleDbParameter
+                    {
+                        ParameterName = "@from",
+                        Value = dateFrom
+                    });
+                    command.Parameters.Add(new OleDbParameter
+                    {
+                        ParameterName = "@to",
+                        Value = dateTo
+                    });
                     var reader = await command.ExecuteReaderAsync();
 
                     var data = new DataTable();

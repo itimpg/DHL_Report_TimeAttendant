@@ -151,7 +151,7 @@ namespace DHL.Report.TimeAttendance.ViewModel
         {
             _reportManager = reportManager;
             _dialogService = dialogService;
-            ReportCriteria = new ReportCriteriaModel();
+            ReportCriteria = new ReportCriteriaModel { SearchDate = DateTime.Today };
 
 #if DEBUG
             ReportCriteria.AccessFilePath = @"‪C:\Users\itim\Desktop\DHL\iCCard3000.mdb";

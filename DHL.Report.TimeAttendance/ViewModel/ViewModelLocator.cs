@@ -42,6 +42,7 @@ namespace DHL.Report.TimeAttendance.ViewModel
 
             SimpleIoc.Default.Register<IExcelDataManager, ExcelDataManager>();
             SimpleIoc.Default.Register<IAccessDataManager, AccessDataManager>();
+            SimpleIoc.Default.Register<IExcelReportManager, ExcelReportManager>();
 
             SimpleIoc.Default.Register<IMyContext>(() =>
             {
@@ -78,7 +79,8 @@ namespace DHL.Report.TimeAttendance.ViewModel
                 return new ReportManager(
                     SimpleIoc.Default.GetInstance<IExcelDataManager>(),
                     SimpleIoc.Default.GetInstance<IAccessDataManager>(),
-                    SimpleIoc.Default.GetInstance<IShiftManager>());
+                    SimpleIoc.Default.GetInstance<IShiftManager>(),
+                    SimpleIoc.Default.GetInstance<IExcelReportManager>());
             });
 
             SimpleIoc.Default.Register<MainViewModel>();

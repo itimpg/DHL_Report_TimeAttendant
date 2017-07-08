@@ -133,8 +133,10 @@
     <Compile Include="Data\MyContext.cs" />
     <Compile Include="Managers\AccessDataManager.cs" />
     <Compile Include="Managers\ExcelDataManager.cs" />
+    <Compile Include="Managers\ExcelReportManager.cs" />
     <Compile Include="Managers\Interfaces\IAccessDataManager.cs" />
     <Compile Include="Managers\Interfaces\IExcelDataManager.cs" />
+    <Compile Include="Managers\Interfaces\IExcelReportManager.cs" />
     <Compile Include="Managers\Interfaces\IShiftManager.cs" />
     <Compile Include="Managers\ShiftManager.cs" />
     <Compile Include="Messages\CloseWindowNotificationMessage.cs" />
