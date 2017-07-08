@@ -22,12 +22,12 @@ namespace DHL.Report.TimeAttendance.ViewModel
         #endregion
 
         #region Command
-        private ICommand _showCommand;
-        public ICommand ShowCommand
+        private ICommand _onLoadCommand;
+        public ICommand OnLoadCommand
         {
             get
             {
-                return _showCommand ?? (_showCommand = new RelayCommand(() =>
+                return _onLoadCommand ?? (_onLoadCommand = new RelayCommand(() =>
                 {
                     AboutModel = _aboutManager.GetAbout();
                 }));

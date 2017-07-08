@@ -6,6 +6,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:DHL.Report.TimeAttendance.Views"
         xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+        xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
         BorderBrush="{DynamicResource AccentColorBrush}"
         BorderThickness="1"
         WindowStartupLocation="CenterScreen"
@@ -13,7 +14,17 @@
         mc:Ignorable="d"
         Title="About" Height="300" Width="300"
         DataContext="{Binding Path=About, Source={StaticResource Locator}}">
-    <Grid>
-        <TextBlock Text="About"/>
-    </Grid>
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Loaded">
+            <i:InvokeCommandAction Command="{Binding OnLoadCommand}" />
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
+    <StackPanel>
+        <Image Source="../Assets/dhl_logo.jpg"/>
+        <TextBlock HorizontalAlignment="Center" Text="DHL Time Attendant Reporting" />
+        <TextBlock HorizontalAlignment="Center" 
+                   Text="{Binding AboutModel.Version, StringFormat=Version: {0}}" />
+        <TextBlock HorizontalAlignment="Center" 
+                   Text="{Binding AboutModel.LatestUpdatedDate, StringFormat=Build: {0:yyyyMMdd}}"/>
+    </StackPanel>
 </Controls:MetroWindow>
