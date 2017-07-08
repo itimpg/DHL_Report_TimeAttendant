@@ -32,7 +32,7 @@
                             Command="{Binding SelectDbFileCommand}"
                             Style="{DynamicResource SquareButtonStyle}"/>
                     <Label Content="Password:"/>
-                    <TextBox Width="120"/>
+                    <TextBox Width="120" Text="{Binding ReportCriteria.AccessPassword}"/>
                 </StackPanel>
             </GroupBox>
 

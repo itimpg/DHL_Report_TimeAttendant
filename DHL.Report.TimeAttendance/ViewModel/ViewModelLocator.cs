@@ -40,6 +40,9 @@ namespace DHL.Report.TimeAttendance.ViewModel
             SimpleIoc.Default.Register<IXmlManager, XmlManager>();
             SimpleIoc.Default.Register<IAboutManager, AboutManager>();
 
+            SimpleIoc.Default.Register<IExcelDataManager, ExcelDataManager>();
+            SimpleIoc.Default.Register<IAccessDataManager, AccessDataManager>();
+
             SimpleIoc.Default.Register<IMyContext>(() =>
             {
                 string connectionString = Path.Combine(
@@ -73,8 +76,8 @@ namespace DHL.Report.TimeAttendance.ViewModel
                 string appPath = AppDomain.CurrentDomain.BaseDirectory;
 
                 return new ReportManager(
-                    SimpleIoc.Default.GetInstance<IShiftManager>(),
-                    SimpleIoc.Default.GetInstance<IConfigManager>());
+                    SimpleIoc.Default.GetInstance<IExcelDataManager>(),
+                    SimpleIoc.Default.GetInstance<IAccessDataManager>());
             });
 
             SimpleIoc.Default.Register<MainViewModel>();

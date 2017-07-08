@@ -11,6 +11,13 @@ namespace DHL.Report.TimeAttendance.Models
             set { Set(() => AccessFilePath, ref _accessFilePath, value); }
         }
 
+        private string _accessPassword;
+        public string AccessPassword
+        {
+            get { return _accessPassword; }
+            set { Set(() => AccessPassword, ref _accessPassword, value); }
+        }
+
         private string _excelFilePath;
         public string ExcelFilePath
         {

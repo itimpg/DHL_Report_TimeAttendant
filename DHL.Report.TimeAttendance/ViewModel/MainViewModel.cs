@@ -6,6 +6,7 @@ using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.CommandWpf;
 using GalaSoft.MvvmLight.Messaging;
 using System;
+using System.Linq;
 using System.Windows.Input;
 
 namespace DHL.Report.TimeAttendance.ViewModel
@@ -63,13 +64,12 @@ namespace DHL.Report.TimeAttendance.ViewModel
         {
             get
             {
-                return _generateReportCommand ?? (_generateReportCommand = new RelayCommand<ReportCriteriaModel>((criteria) =>
+                return _generateReportCommand ?? (_generateReportCommand = new RelayCommand<ReportCriteriaModel>(async (criteria) =>
                 {
                     try
                     {
                         IsLoading = true;
-                        // TODO: generate reports
-                        //await _reportManager.CreateReport1Async(null, null);
+                        await _reportManager.CreateReportAsync(criteria);
                         _dialogService.ShowMessage("Success", "Finish");
                     }
                     catch (Exception ex)
@@ -82,11 +82,11 @@ namespace DHL.Report.TimeAttendance.ViewModel
                     }
                 }, (criteria) =>
                 {
-                    return criteria != null &&
+                    return true || (criteria != null &&
                         !string.IsNullOrEmpty(criteria.AccessFilePath) &&
                         !string.IsNullOrEmpty(criteria.ExcelFilePath) &&
                         !string.IsNullOrEmpty(criteria.OutputDir) &&
-                        (criteria.IsOption1 || criteria.IsOption2 || criteria.IsOption3 || criteria.IsOption4);
+                        (criteria.IsOption1 || criteria.IsOption2 || criteria.IsOption3 || criteria.IsOption4));
                 }));
             }
         }
@@ -141,7 +141,9 @@ namespace DHL.Report.TimeAttendance.ViewModel
         #endregion
 
         #region Constructor
-        public MainViewModel(IReportManager reportManager, IDialogService dialogService)
+        public MainViewModel(
+            IReportManager reportManager,
+            IDialogService dialogService)
         {
             _reportManager = reportManager;
             _dialogService = dialogService;

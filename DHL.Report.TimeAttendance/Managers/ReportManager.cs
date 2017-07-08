@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using DHL.Report.TimeAttendance.Managers.Interfaces;
 using DHL.Report.TimeAttendance.Models;
 
@@ -8,36 +7,29 @@ namespace DHL.Report.TimeAttendance.Managers
     public class ReportManager : IReportManager
     {
         #region Fields
-        private readonly IShiftManager _shiftManager;
-        private readonly IConfigManager _configManager;
+        private readonly IExcelDataManager _excelDataManager;
+        private readonly IAccessDataManager _accessDataManager;
         #endregion
 
         #region Constructor
-        public ReportManager(IShiftManager shiftManager, IConfigManager configManager)
+        public ReportManager(IExcelDataManager excelDataManager, IAccessDataManager accessDataManager)
         {
-            _shiftManager = shiftManager;
-            _configManager = configManager;
+            _excelDataManager = excelDataManager;
+            _accessDataManager = accessDataManager;
         }
         #endregion
 
-        public Task CreateReport1Async(ConfigModel config, ReportCriteriaModel criteria)
+        public async Task CreateReportAsync(ReportCriteriaModel criteria)
         {
-            throw new NotImplementedException();
-        }
+            await Task.Run(() =>
+            {
+                var hrItems = _excelDataManager.GetHrSource(criteria.ExcelFilePath);
+                var dbItems = _accessDataManager.ReadData(criteria.AccessFilePath, criteria.AccessPassword);
 
-        public Task CreateReport2Async(ConfigModel config, ReportCriteriaModel criteria)
-        {
-            throw new NotImplementedException();
-        }
+                string a = "";
 
-        public Task CreateReport3Async(ConfigModel config, ReportCriteriaModel criteria)
-        {
-            throw new NotImplementedException();
-        }
 
-        public Task CreateReport4Async(ConfigModel config, ReportCriteriaModel criteria)
-        {
-            throw new NotImplementedException();
+            });
         }
     }
 }
