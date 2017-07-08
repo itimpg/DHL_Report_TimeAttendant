@@ -51,7 +51,7 @@ namespace DHL.Report.TimeAttendance.Managers
                                 .FirstOrDefault(x => x.HasValue),
                             Employees = src.Select(x => new EmployeeInfoModel
                             {
-                                Id = ToString(x, "id_card"),
+                                EmployeeId = ToString(x, "id_card"),
                                 Name = ToString(x, "fs_name"),
                                 Company = ToString(x, "company"),
                                 Department = ToString(x, "descript"),

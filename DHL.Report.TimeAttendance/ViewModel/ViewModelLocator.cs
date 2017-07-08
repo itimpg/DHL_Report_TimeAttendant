@@ -77,7 +77,8 @@ namespace DHL.Report.TimeAttendance.ViewModel
 
                 return new ReportManager(
                     SimpleIoc.Default.GetInstance<IExcelDataManager>(),
-                    SimpleIoc.Default.GetInstance<IAccessDataManager>());
+                    SimpleIoc.Default.GetInstance<IAccessDataManager>(),
+                    SimpleIoc.Default.GetInstance<IShiftManager>());
             });
 
             SimpleIoc.Default.Register<MainViewModel>();

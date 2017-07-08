@@ -11,9 +11,16 @@ namespace DHL.Report.TimeAttendance.Models
 
     public class EmployeeInfoModel
     {
-        public string Id { get; set; }
+        public string EmployeeId { get; set; }
         public string Name { get; set; }
         public string Company { get; set; }
         public string Department { get; set; }
+    }
+
+    public class EmployeeSwipeInfoModel
+    {
+        public string EmployeeId { get; set; }
+        public bool IsOut { get; set; }
+        public DateTime ReadDate { get; set; }
     }
 }

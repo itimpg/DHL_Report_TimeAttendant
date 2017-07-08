@@ -1,9 +1,11 @@
-﻿using System.Data;
+﻿using DHL.Report.TimeAttendance.Models;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace DHL.Report.TimeAttendance.Managers.Interfaces
 {
     public interface IAccessDataManager
     {
-        DataTable ReadData(string filePath, string password);
+        Task<IEnumerable<EmployeeSwipeInfoModel>> ReadData(string filePath, string password);
     }
 }

@@ -1,4 +1,4 @@
-using DHL.Report.TimeAttendance.Managers.Interfaces;
+﻿using DHL.Report.TimeAttendance.Managers.Interfaces;
 using DHL.Report.TimeAttendance.Messages;
 using DHL.Report.TimeAttendance.Models;
 using DHL.Report.TimeAttendance.Services.Interfaces;
@@ -148,6 +148,12 @@ namespace DHL.Report.TimeAttendance.ViewModel
             _reportManager = reportManager;
             _dialogService = dialogService;
             ReportCriteria = new ReportCriteriaModel();
+
+#if DEBUG
+            ReportCriteria.AccessFilePath = @"‪C:\Users\itim\Desktop\DHL\iCCard3000.mdb";
+            ReportCriteria.AccessPassword = "168168";
+            ReportCriteria.ExcelFilePath = @"C:\Users\itim\Desktop\DHL\attendance_tops.xlsx";
+#endif
         }
         #endregion  
     }
