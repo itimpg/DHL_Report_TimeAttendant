@@ -86,7 +86,7 @@ namespace DHL.Report.TimeAttendance.ViewModel
                     }
                 }, (criteria) =>
                 {
-                    return true || (criteria != null &&
+                    return (criteria != null &&
                         !string.IsNullOrEmpty(criteria.AccessFilePath) &&
                         !string.IsNullOrEmpty(criteria.ExcelFilePath) &&
                         !string.IsNullOrEmpty(criteria.OutputDir) &&
@@ -154,9 +154,15 @@ namespace DHL.Report.TimeAttendance.ViewModel
             ReportCriteria = new ReportCriteriaModel { SearchDate = DateTime.Today };
 
 #if DEBUG
-            ReportCriteria.AccessFilePath = @"‪C:\Users\itim\Desktop\DHL\iCCard3000.mdb";
+            ReportCriteria.AccessFilePath = @"‪D:\DHL\iCCard3000.mdb";
             ReportCriteria.AccessPassword = "168168";
-            ReportCriteria.ExcelFilePath = @"C:\Users\itim\Desktop\DHL\attendance_tops.xlsx";
+            ReportCriteria.ExcelFilePath = @"‪D:\DHL\attendance_tops.xlsx";
+            ReportCriteria.OutputDir = @"D:\";
+            ReportCriteria.SearchDate = new DateTime(2017, 6, 1);
+            ReportCriteria.IsOption1 = true;
+            ReportCriteria.IsOption2 = true;
+            ReportCriteria.IsOption3 = true;
+            ReportCriteria.IsOption4 = true;
 #endif
         }
         #endregion  
