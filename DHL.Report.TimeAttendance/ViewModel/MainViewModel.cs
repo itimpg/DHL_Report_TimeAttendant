@@ -7,6 +7,7 @@ using GalaSoft.MvvmLight.CommandWpf;
 using GalaSoft.MvvmLight.Messaging;
 using System;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows.Input;
 
 namespace DHL.Report.TimeAttendance.ViewModel
@@ -66,11 +67,14 @@ namespace DHL.Report.TimeAttendance.ViewModel
             {
                 return _generateReportCommand ?? (_generateReportCommand = new RelayCommand<ReportCriteriaModel>(async (criteria) =>
                 {
+                    IsLoading = true;
                     try
                     {
-                        IsLoading = true;
-                        await _reportManager.CreateReportAsync(criteria);
-                        _dialogService.ShowMessage("Success", "Finish");
+                        await Task.Run(async () =>
+                        {
+                            await _reportManager.CreateReportAsync(criteria);
+                            _dialogService.ShowMessage("Success", "Finish");
+                        });
                     }
                     catch (Exception ex)
                     {

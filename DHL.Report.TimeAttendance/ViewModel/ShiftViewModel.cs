@@ -7,6 +7,7 @@ using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.CommandWpf;
 using GalaSoft.MvvmLight.Messaging;
 using System;
+using System.Threading.Tasks;
 using System.Windows.Input;
 
 namespace DHL.Report.TimeAttendance.ViewModel
@@ -83,13 +84,16 @@ namespace DHL.Report.TimeAttendance.ViewModel
             {
                 return _saveCommand ?? (_saveCommand = new RelayCommand<ShiftModel>(async model =>
                 {
+                    IsLoading = true;
                     try
                     {
-                        IsLoading = true;
-                        await _shiftManager.SaveShiftAsync(model);
+                        await Task.Run(async () =>
+                        {
+                            await _shiftManager.SaveShiftAsync(model);
 
-                        Messenger.Default.Send(new DataChangedNotificationMessage("Camera Changed", DataChangedType.Shift));
-                        Messenger.Default.Send(new CloseWindowNotificationMessage("Closed", WindowType.Shift));
+                            Messenger.Default.Send(new DataChangedNotificationMessage("Camera Changed", DataChangedType.Shift));
+                            Messenger.Default.Send(new CloseWindowNotificationMessage("Closed", WindowType.Shift));
+                        });
                     }
                     catch (Exception ex)
                     {
