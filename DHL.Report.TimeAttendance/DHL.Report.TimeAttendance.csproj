@@ -135,6 +135,7 @@
     <Compile Include="Data\Interfaces\IMyContext.cs" />
     <Compile Include="Data\Interfaces\IShiftRepository.cs" />
     <Compile Include="Data\MyContext.cs" />
+    <Compile Include="Helpers\LinqHelper.cs" />
     <Compile Include="Managers\AccessDataManager.cs" />
     <Compile Include="Managers\ExcelDataManager.cs" />
     <Compile Include="Managers\ExcelReportManager.cs" />

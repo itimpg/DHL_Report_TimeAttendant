@@ -57,7 +57,7 @@
             <GroupBox Header="รายงาน">
                 <StackPanel>
                     <StackPanel Orientation="Horizontal">
-                        <Label Content="เลือกวัน/เดือน: "/>
+                        <Label Content="เลือกเดือน: "/>
                         <DatePicker SelectedDate="{Binding ReportCriteria.SearchDate}" Width="200"/>
                     </StackPanel>
                     <CheckBox Margin="0,5" Content="รายงานประจำเดือน" IsChecked="{Binding ReportCriteria.IsOption1}"/>

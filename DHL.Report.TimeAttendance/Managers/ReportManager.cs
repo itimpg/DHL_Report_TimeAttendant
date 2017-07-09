@@ -89,26 +89,26 @@ namespace DHL.Report.TimeAttendance.Managers
                             new EmployeeReportModel
                             { ReportDate = DateTime.Today,
                                 Name = "Test2",
-                                Department = "Dept2",
+                                Department = "Dept1",
                                 EmployeeId = "02",
-                                ShiftCode = "99",
-                                ShiftName = "Unknown",
+                                ShiftCode = "02",
+                                ShiftName = "Early",
                                 WorkingSwipes = new List<EmployeeReportSwipeModel>
                                 {
                                     new EmployeeReportSwipeModel
                                     {
                                         No = 1,
-                                        In = DateTime.Now,
-                                        Out = DateTime.Now.AddHours(1),
-                                        WorkingTime = new TimeSpan(1,0,0),
+                                        In = DateTime.Now.AddHours(2),
+                                        Out = DateTime.Now.AddHours(4),
+                                        WorkingTime = new TimeSpan(2,0,0),
                                     },
                                     new EmployeeReportSwipeModel
                                     {
                                         No = 1,
-                                        In = DateTime.Now.AddHours(2),
-                                        Out = DateTime.Now.AddHours(5),
-                                        WorkingTime = new TimeSpan(3,0,0),
-                                        NotWorkingTime = new TimeSpan(1,0,0)
+                                        In = DateTime.Now.AddHours(6),
+                                        Out = DateTime.Now.AddHours(10),
+                                        WorkingTime = new TimeSpan(4,0,0),
+                                        NotWorkingTime = new TimeSpan(2,0,0)
                                     },
                                 },
                                 OtSwipes = new List<EmployeeReportSwipeModel>

@@ -1,11 +1,12 @@
-﻿using System;
+﻿using DHL.Report.TimeAttendance.Helpers;
 using DHL.Report.TimeAttendance.Managers.Interfaces;
-using System.IO;
 using DHL.Report.TimeAttendance.Models;
 using OfficeOpenXml;
-using System.Drawing;
-using System.Linq;
 using OfficeOpenXml.Style;
+using System;
+using System.Drawing;
+using System.IO;
+using System.Linq;
 
 namespace DHL.Report.TimeAttendance.Managers
 {
@@ -286,8 +287,12 @@ namespace DHL.Report.TimeAttendance.Managers
                         {
                             Dept = g.Key.Department,
                             Shift = $"{g.Key.ShiftCode} {g.Key.ShiftName}",
-                            Swipe = g.SelectMany(x => x.WorkingSwipes),
-                            OtSwipe = g.SelectMany(x => x.OtSwipes),
+                            AvgIn = g.Select(x => x.TotalWorkingTime).Average(),
+                            AvgOut = g.Select(x => x.TotalNotWorkingTime).Average(),
+                            TotalSum = g.Select(x => x.TotalWorkingTime + x.TotalNotWorkingTime).Average(),
+                            AvgInOT = g.Select(x => x.TotalWorkingTimeOT).Average(),
+                            AvgOutOT = g.Select(x => x.TotalNotWorkingTimeOT).Average(),
+                            TotalSumOT = g.Select(x => x.TotalWorkingTimeOT + x.TotalNotWorkingTimeOT).Average(),
                         });
 
                     int row = 3;
@@ -295,12 +300,12 @@ namespace DHL.Report.TimeAttendance.Managers
                     {
                         cells[row, 1].Value = d.Dept;
                         cells[row, 2].Value = d.Shift;
-                        cells[row, 3].Value = "";
-                        cells[row, 4].Value = "";
-                        cells[row, 5].Value = "";
-                        cells[row, 6].Value = "";
-                        cells[row, 7].Value = "";
-                        cells[row, 8].Value = "";
+                        cells[row, 3].Value = d.AvgIn.ToString(@"hh\:mm");
+                        cells[row, 4].Value = d.AvgOut.ToString(@"hh\:mm");
+                        cells[row, 5].Value = d.TotalSum.ToString(@"hh\:mm");
+                        cells[row, 6].Value = d.AvgInOT.ToString(@"hh\:mm");
+                        cells[row, 7].Value = d.AvgOutOT.ToString(@"hh\:mm");
+                        cells[row, 8].Value = d.TotalSumOT.ToString(@"hh\:mm");
 
                         row++;
                     }
