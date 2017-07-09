@@ -39,7 +39,7 @@ namespace DHL.Report.TimeAttendance.Managers
                     await connection.OpenAsync();
                     var query = @"
                         SELECT
-                            c.f_ConsumerNO, sr.f_CardNO, sr.f_InOut, sr.f_ReadDate
+                            c.f_ConsumerNO, sr.f_InOut, sr.f_ReadDate
                         FROM t_b_consumer c
                         INNER JOIN t_d_SwipeRecord sr 
                             ON  c.f_ConsumerID = sr.f_ConsumerID 
@@ -65,7 +65,6 @@ namespace DHL.Report.TimeAttendance.Managers
                     return data.AsEnumerable().Select(x => new EmployeeSwipeInfoModel
                     {
                         EmployeeId = x.Field<string>("f_ConsumerNO").Trim(),
-                        SwipeCode = x.Field<decimal>("f_CardNo").ToString(),
                         IsOut = Convert.ToBoolean(x.Field<byte>("f_InOut")),
                         ReadDate = x.Field<DateTime>("f_ReadDate")
                     });

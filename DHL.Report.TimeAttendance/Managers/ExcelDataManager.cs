@@ -52,6 +52,7 @@ namespace DHL.Report.TimeAttendance.Managers
                             Employees = src.Select(x => new EmployeeInfoModel
                             {
                                 EmployeeId = ToString(x, "id_card"),
+                                ShiftCode = ToString(x, "shift"),
                                 Name = ToString(x, "fs_name"),
                                 Company = ToString(x, "company"),
                                 Department = ToString(x, "descript"),

@@ -42,35 +42,88 @@ namespace DHL.Report.TimeAttendance.Managers
 
             var result = new EmployeeReportResultModel()
             {
-                ReportYear = searchDate.Year,
-                ReportMonth = searchDate.Month,
-                Employees = new List<EmployeeReportModel>
+                ReportMonth = new DateTime(2017, 6, 1),
+                Companies = new List<EmployeeReportCompanyModel>
                 {
-                    new EmployeeReportModel
+                    new EmployeeReportCompanyModel
                     {
-                        Info = new EmployeeInfoModel { Name = "Test1", Department = "Dept1", EmployeeId = "01", Company = "DHL" },
-                        ShiftCode = "02",
-                        ShiftName = "Early",
-                        SwipeCode = "0001",
-                        Items = new List<EmployeeReportItemModel>
+                        Company = "DHL",
+                        Employees = new List<EmployeeReportModel>
                         {
-                            new EmployeeReportItemModel { In = DateTime.Today, Out = DateTime.Today.AddMinutes(19) },
-                            new EmployeeReportItemModel { In = DateTime.Today.AddHours(1), Out = DateTime.Today.AddMinutes(29) }
+                            new EmployeeReportModel
+                            {
+                                ReportDate = DateTime.Today.AddDays(1),
+                                Name = "Test1",
+                                Department = "Dept1",
+                                EmployeeId = "01",
+                                ShiftCode = "02",
+                                ShiftName = "Early",
+                                WorkingSwipes = new List<EmployeeReportSwipeModel>
+                                {
+                                    new EmployeeReportSwipeModel
+                                    {
+                                        No = 1,
+                                        In = DateTime.Now,
+                                        Out = DateTime.Now.AddHours(1),
+                                        WorkingTime = new TimeSpan(1,0,0),
+                                    },
+                                    new EmployeeReportSwipeModel
+                                    {
+                                        No = 1,
+                                        In = DateTime.Now.AddHours(2),
+                                        Out = DateTime.Now.AddHours(5),
+                                        WorkingTime = new TimeSpan(3,0,0),
+                                        NotWorkingTime = new TimeSpan(1,0,0)
+                                    },
+                                },
+                                OtSwipes = new List<EmployeeReportSwipeModel>
+                                {
+                                    new EmployeeReportSwipeModel
+                                    {
+                                        No = 1,
+                                        In = DateTime.Now.AddHours(3),
+                                        Out = DateTime.Now.AddHours(9),
+                                    },
+                                },
+                            },
+                            new EmployeeReportModel
+                            { ReportDate = DateTime.Today,
+                                Name = "Test2",
+                                Department = "Dept2",
+                                EmployeeId = "02",
+                                ShiftCode = "99",
+                                ShiftName = "Unknown",
+                                WorkingSwipes = new List<EmployeeReportSwipeModel>
+                                {
+                                    new EmployeeReportSwipeModel
+                                    {
+                                        No = 1,
+                                        In = DateTime.Now,
+                                        Out = DateTime.Now.AddHours(1),
+                                        WorkingTime = new TimeSpan(1,0,0),
+                                    },
+                                    new EmployeeReportSwipeModel
+                                    {
+                                        No = 1,
+                                        In = DateTime.Now.AddHours(2),
+                                        Out = DateTime.Now.AddHours(5),
+                                        WorkingTime = new TimeSpan(3,0,0),
+                                        NotWorkingTime = new TimeSpan(1,0,0)
+                                    },
+                                },
+                                OtSwipes = new List<EmployeeReportSwipeModel>
+                                {
+                                    new EmployeeReportSwipeModel
+                                    {
+                                        No = 1,
+                                        In = DateTime.Now.AddHours(3),
+                                        Out = DateTime.Now.AddHours(9),
+                                    },
+                                },
+                            }
                         }
-                    },
-                    new EmployeeReportModel
-                    {
-                        Info = new EmployeeInfoModel { Name = "Test2", Department = "Dept2", EmployeeId = "02", Company = "DHL" },
-                        ShiftCode = "09",
-                        ShiftName = "EarlyOT",
-                        SwipeCode = "0002",
-                        Items = new List<EmployeeReportItemModel>
-                        {
-                            new EmployeeReportItemModel { In = DateTime.Today, Out = DateTime.Today.AddMinutes(19) },
-                            new EmployeeReportItemModel { In = DateTime.Today.AddHours(1), Out = DateTime.Today.AddMinutes(29) }
-                        }
-                    },
-                },
+                    }
+                }
             };
 
             if (criteria.IsOption1)
