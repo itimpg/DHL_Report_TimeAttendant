@@ -116,8 +116,8 @@ namespace DHL.Report.TimeAttendance.Managers
                             cells[row, 5].Value = "No";
                             cells[row, 6].Value = "IN";
                             cells[row, 7].Value = "OUT";
-                            cells[row, 8].Value = employee.TotalOTWorkingTime.ToString(@"hh\:mm");
-                            cells[row, 9].Value = employee.TotalOTNotWorkingTime.ToString(@"hh\:mm");
+                            cells[row, 8].Value = employee.TotalWorkingTimeOT.ToString(@"hh\:mm");
+                            cells[row, 9].Value = employee.TotalNotWorkingTimeOT.ToString(@"hh\:mm");
                             cells[row, 1, row, 9].Style.Font.Bold = true;
                             cells[row, 1, row, 4].Style.Font.Color.SetColor(Color.Silver);
                             cells[row, 1, row, 9].Style.Fill.PatternType = ExcelFillStyle.Solid;
@@ -182,25 +182,55 @@ namespace DHL.Report.TimeAttendance.Managers
                     cells[2, 6].Value = "End";
                     cells[2, 7].Value = "IN";
                     cells[2, 8].Value = "OUT";
-                    cells[2, 9].Value = "OUT";
+                    cells[2, 9].Value = "SUM";
                     cells[2, 10].Value = "Start";
                     cells[2, 11].Value = "End";
                     cells[2, 12].Value = "IN";
                     cells[2, 13].Value = "OUT";
-                    cells[2, 14].Value = "Start";
+                    cells[2, 14].Value = "SUM";
                     cells[1, 1, 2, 14].Style.Font.Bold = true;
                     cells[1, 1, 2, 14].Style.Fill.PatternType = ExcelFillStyle.Solid;
                     cells[1, 1, 2, 14].Style.Fill.BackgroundColor.SetColor(Color.Silver);
                     cells[1, 1, 2, 14].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
                     cells[1, 1, 2, 14].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
 
+                    var data = company.Employees
+                        .Select(x => new
+                        {
+                            Day = x.ReportDate.Day,
+                            Id = x.EmployeeId,
+                            Name = x.Name,
+                            Dept = x.Department,
+                            Shift = $"{x.ShiftCode} {x.ShiftName}",
+                            StartWork = x.WorkingSwipes.Min(s => s.In),
+                            EndWork = x.WorkingSwipes.Max(s => s.Out),
+                            TotalIn = x.TotalWorkingTime,
+                            TotalOut = x.TotalNotWorkingTime,
+                            Sum = x.TotalWorkingTime + x.TotalNotWorkingTime,
+                            StartWorkOT = x.OtSwipes.Min(s => s.In),
+                            EndWorkOT = x.OtSwipes.Max(s => s.Out),
+                            TotalInOT = x.TotalWorkingTimeOT,
+                            TotalOutOT = x.TotalNotWorkingTimeOT,
+                            SumOT = x.TotalWorkingTimeOT + x.TotalNotWorkingTimeOT
+                        }).OrderBy(x => x.Id).ThenBy(x => x.Day);
+
                     int row = 3;
-                    foreach (var employee in company.Employees.OrderBy(x => x.EmployeeId))
+                    foreach (var emp in data)
                     {
-                        cells[row, 1].Value = employee.EmployeeId;
-                        cells[row, 2].Value = employee.Name;
-                        cells[row, 3].Value = employee.Department;
-                        cells[row, 4].Value = $"{employee.ShiftCode} {employee.ShiftName}";
+                        cells[row, 1].Value = emp.Id;
+                        cells[row, 2].Value = emp.Name;
+                        cells[row, 3].Value = emp.Dept;
+                        cells[row, 4].Value = emp.Shift;
+                        cells[row, 5].Value = emp.StartWork.ToString("dd/MM/yyyy HH:mm");
+                        cells[row, 6].Value = emp.EndWork.ToString("dd/MM/yyyy HH:mm");
+                        cells[row, 7].Value = emp.TotalIn.ToString(@"hh\:mm");
+                        cells[row, 8].Value = emp.TotalOut.ToString(@"hh\:mm");
+                        cells[row, 9].Value = emp.Sum.ToString(@"hh\:mm");
+                        cells[row, 10].Value = emp.StartWorkOT.ToString("dd/MM/yyyy HH:mm");
+                        cells[row, 11].Value = emp.EndWorkOT.ToString("dd/MM/yyyy HH:mm");
+                        cells[row, 12].Value = emp.TotalInOT.ToString(@"hh\:mm");
+                        cells[row, 13].Value = emp.TotalOutOT.ToString(@"hh\:mm");
+                        cells[row, 14].Value = emp.SumOT.ToString(@"hh\:mm");
 
                         row++;
                     }
@@ -311,8 +341,8 @@ namespace DHL.Report.TimeAttendance.Managers
                                     Shift = $"{gx.Key.ShiftCode} {gx.Key.ShiftName}",
                                     Work = gx.Aggregate(TimeSpan.Zero, (res, x) => res + x.TotalWorkingTime),
                                     NoWork = gx.Aggregate(TimeSpan.Zero, (res, x) => res + x.TotalNotWorkingTime),
-                                    WorkOT = gx.Aggregate(TimeSpan.Zero, (res, x) => res + x.TotalOTWorkingTime),
-                                    NoWorkOT = gx.Aggregate(TimeSpan.Zero, (res, x) => res + x.TotalOTNotWorkingTime),
+                                    WorkOT = gx.Aggregate(TimeSpan.Zero, (res, x) => res + x.TotalWorkingTimeOT),
+                                    NoWorkOT = gx.Aggregate(TimeSpan.Zero, (res, x) => res + x.TotalNotWorkingTimeOT),
                                 }).OrderBy(x => x.Id)
                         })
                         .OrderBy(x => x.Date);

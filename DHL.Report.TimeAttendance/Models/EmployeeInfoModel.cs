@@ -68,7 +68,7 @@ namespace DHL.Report.TimeAttendance.Models
         }
 
         public IList<EmployeeReportSwipeModel> OtSwipes { get; set; }
-        public TimeSpan TotalOTWorkingTime
+        public TimeSpan TotalWorkingTimeOT
         {
             get
             {
@@ -77,7 +77,7 @@ namespace DHL.Report.TimeAttendance.Models
                 return OtSwipes.Aggregate(TimeSpan.Zero, (time, x) => time + x.WorkingTime);
             }
         }
-        public TimeSpan TotalOTNotWorkingTime
+        public TimeSpan TotalNotWorkingTimeOT
         {
             get
             {

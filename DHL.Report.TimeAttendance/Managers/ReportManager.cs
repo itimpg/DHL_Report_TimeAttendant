@@ -118,6 +118,7 @@ namespace DHL.Report.TimeAttendance.Managers
                                         No = 1,
                                         In = DateTime.Now.AddHours(3),
                                         Out = DateTime.Now.AddHours(9),
+                                        WorkingTime = new TimeSpan(3,0,0),
                                     },
                                 },
                             }
