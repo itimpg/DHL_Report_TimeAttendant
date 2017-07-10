@@ -4,14 +4,9 @@ using System.Linq;
 
 namespace DHL.Report.TimeAttendance.Models
 {
-    public class EmployeeResultModel
-    {
-        public DateTime? DataDate { get; set; }
-        public IList<EmployeeInfoModel> Employees { get; set; }
-    }
-
     public class EmployeeInfoModel
     {
+        public DateTime DataDate { get; set; }
         public string EmployeeId { get; set; }
         public string Name { get; set; }
         public string ShiftCode { get; set; }
@@ -21,10 +16,12 @@ namespace DHL.Report.TimeAttendance.Models
 
     public class EmployeeSwipeInfoModel
     {
+        public DateTime ReportDate { get; set; }
         public string EmployeeId { get; set; }
-        public DateTime DateIn { get; set; }
+        public DateTime? DateIn { get; set; }
         public DateTime? DateOut { get; set; }
         public TimeSpan? WorkingTime { get; set; }
+        public TimeSpan? NotWorkingTime { get; set; }
     }
 
     public class EmployeeReportResultModel
@@ -93,8 +90,27 @@ namespace DHL.Report.TimeAttendance.Models
     {
         public int No { get; set; }
         public DateTime In { get; set; }
-        public DateTime Out { get; set; }
+        public DateTime? Out { get; set; }
         public TimeSpan WorkingTime { get; set; }
         public TimeSpan NotWorkingTime { get; set; }
+    }
+
+    public class ReportSourceModel
+    {
+        public DateTime ReportDate { get; internal set; }
+        public string EmployeeId { get; internal set; }
+        public DateTime? DateIn { get; internal set; }
+        public DateTime? DateOut { get; internal set; }
+        public TimeSpan WorkingTime { get; internal set; }
+        public TimeSpan NotWorkingTime { get; internal set; }
+        public bool IsEarlyOT { get; internal set; }
+        public bool IsLateOT { get; internal set; }
+        public string Company { get; internal set; }
+        public string Name { get; internal set; }
+        public string Department { get; internal set; }
+        public string ShiftCode { get; internal set; }
+        public string ShiftName { get; internal set; }
+        public DateTime WorkFrom { get; internal set; }
+        public DateTime WorkTo { get; internal set; }
     }
 }

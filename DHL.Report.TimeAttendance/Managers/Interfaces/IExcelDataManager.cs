@@ -5,6 +5,6 @@ namespace DHL.Report.TimeAttendance.Managers.Interfaces
 {
     public interface IExcelDataManager
     {
-        IEnumerable<EmployeeResultModel> GetHrSource(string filePath);
+        IEnumerable<EmployeeInfoModel> GetHrSource(string filePath);
     }
 }

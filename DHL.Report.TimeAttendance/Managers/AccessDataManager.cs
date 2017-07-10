@@ -67,7 +67,9 @@ namespace DHL.Report.TimeAttendance.Managers
                         EmployeeId = x.Field<string>("f_ConsumerNO").Trim(),
                         IsOut = Convert.ToBoolean(x.Field<byte>("f_InOut")),
                         ReadDate = x.Field<DateTime>("f_ReadDate")
-                    });
+                    }).Where(x => x.EmployeeId == "10004064").OrderBy(x => x.ReadDate);
+
+                    var datx = src.ToList();
 
                     var query =
                         from iX in src.Where(x => x.IsOut == false)
@@ -96,11 +98,15 @@ namespace DHL.Report.TimeAttendance.Managers
                         from iZ in lj.DefaultIfEmpty()
                         select new EmployeeSwipeInfoModel
                         {
+                            // TODO: fix report Date
+                            ReportDate = iX.ReadDate.Date,
                             EmployeeId = iX.EmployeeId,
                             DateIn = iX.ReadDate,
                             DateOut = iZ == null ? (DateTime?)null : iZ.DateOut,
                             WorkingTime = iZ == null ? (TimeSpan?)null : iZ.DateOut - iX.ReadDate
                         };
+
+                    var xxf = query.ToList();
 
                     return query.OrderBy(x => x.DateIn);
                 }

@@ -11,7 +11,7 @@ namespace DHL.Report.TimeAttendance.Managers
 {
     public class ExcelDataManager : IExcelDataManager
     {
-        public IEnumerable<EmployeeResultModel> GetHrSource(string filePath)
+        public IEnumerable<EmployeeInfoModel> GetHrSource(string filePath)
         {
             if (string.IsNullOrEmpty(filePath))
             {
@@ -41,23 +41,26 @@ namespace DHL.Report.TimeAttendance.Managers
 
                     foreach (DataTable dt in result.Tables)
                     {
-                        var src = dt.AsEnumerable().Where(x => !string.IsNullOrEmpty(ToString(x, "id_card")));
-
-                        yield return new EmployeeResultModel
+                        if (!dt.Columns.Contains("id_card"))
                         {
-                            DataDate = src
-                                .GroupBy(x => ToDateTime(x, "str_date"))
-                                .Select(g => g.Key)
-                                .FirstOrDefault(x => x.HasValue),
-                            Employees = src.Select(x => new EmployeeInfoModel
-                            {
-                                EmployeeId = ToString(x, "id_card"),
-                                ShiftCode = ToString(x, "shift"),
-                                Name = ToString(x, "fs_name"),
-                                Company = ToString(x, "company"),
-                                Department = ToString(x, "descript"),
-                            }).ToList()
-                        };
+                            continue;
+                        }
+
+                        var src = dt.AsEnumerable().Where(x => !string.IsNullOrEmpty(ToString(x, "id_card")));
+                        var employees = src.Select(x => new EmployeeInfoModel
+                        {
+                            DataDate = ToDateTime(x, "str_date") ?? DateTime.Today,
+                            EmployeeId = ToString(x, "id_card"),
+                            ShiftCode = ToString(x, "shift"),
+                            Name = ToString(x, "fs_name"),
+                            Company = ToString(x, "company"),
+                            Department = ToString(x, "descript"),
+                        });
+
+                        foreach (var e in employees)
+                        {
+                            yield return e;
+                        }
                     }
                 }
             }

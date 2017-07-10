@@ -90,7 +90,7 @@ namespace DHL.Report.TimeAttendance.Managers
                                 cells[row, 4].Value = $"{employee.ShiftCode} {employee.ShiftName}";
                                 cells[row, 5].Value = work.No;
                                 cells[row, 6].Value = work.In.ToString("dd/MM/yyyy HH:mm");
-                                cells[row, 7].Value = work.Out.ToString("dd/MM/yyyy HH:mm");
+                                cells[row, 7].Value = work.Out.HasValue ? work.Out.Value.ToString("dd/MM/yyyy HH:mm") : string.Empty;
                                 cells[row, 8].Value = work.WorkingTime.ToString(@"hh\:mm");
                                 cells[row, 9].Value = work.NotWorkingTime.ToString(@"hh\:mm");
                                 row++;
@@ -134,7 +134,7 @@ namespace DHL.Report.TimeAttendance.Managers
                                 cells[row, 4].Value = $"{employee.ShiftCode} {employee.ShiftName}";
                                 cells[row, 5].Value = work.No;
                                 cells[row, 6].Value = work.In.ToString("dd/MM/yyyy HH:mm");
-                                cells[row, 7].Value = work.Out.ToString("dd/MM/yyyy HH:mm");
+                                cells[row, 7].Value = work.Out.HasValue ? work.Out.Value.ToString("dd/MM/yyyy HH:mm") : string.Empty;
                                 cells[row, 8].Value = work.WorkingTime.ToString(@"hh\:mm");
                                 cells[row, 9].Value = work.NotWorkingTime.ToString(@"hh\:mm");
                                 row++;
@@ -213,7 +213,7 @@ namespace DHL.Report.TimeAttendance.Managers
                             TotalInOT = x.TotalWorkingTimeOT,
                             TotalOutOT = x.TotalNotWorkingTimeOT,
                             SumOT = x.TotalWorkingTimeOT + x.TotalNotWorkingTimeOT
-                        }).OrderBy(x => x.Id).ThenBy(x => x.Day);
+                        }).OrderBy(x => x.Id).ThenBy(x => x.Day).ToList();
 
                     int row = 3;
                     foreach (var emp in data)
@@ -223,12 +223,12 @@ namespace DHL.Report.TimeAttendance.Managers
                         cells[row, 3].Value = emp.Dept;
                         cells[row, 4].Value = emp.Shift;
                         cells[row, 5].Value = emp.StartWork.ToString("dd/MM/yyyy HH:mm");
-                        cells[row, 6].Value = emp.EndWork.ToString("dd/MM/yyyy HH:mm");
+                        cells[row, 6].Value = emp.EndWork.HasValue ? emp.EndWork.Value.ToString("dd/MM/yyyy HH:mm") : string.Empty;
                         cells[row, 7].Value = emp.TotalIn.ToString(@"hh\:mm");
                         cells[row, 8].Value = emp.TotalOut.ToString(@"hh\:mm");
                         cells[row, 9].Value = emp.Sum.ToString(@"hh\:mm");
                         cells[row, 10].Value = emp.StartWorkOT.ToString("dd/MM/yyyy HH:mm");
-                        cells[row, 11].Value = emp.EndWorkOT.ToString("dd/MM/yyyy HH:mm");
+                        cells[row, 11].Value = emp.EndWorkOT.HasValue ? emp.EndWorkOT.Value.ToString("dd/MM/yyyy HH:mm") : string.Empty;
                         cells[row, 12].Value = emp.TotalInOT.ToString(@"hh\:mm");
                         cells[row, 13].Value = emp.TotalOutOT.ToString(@"hh\:mm");
                         cells[row, 14].Value = emp.SumOT.ToString(@"hh\:mm");

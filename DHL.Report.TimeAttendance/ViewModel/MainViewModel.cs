@@ -156,7 +156,7 @@ namespace DHL.Report.TimeAttendance.ViewModel
 #if DEBUG
             ReportCriteria.AccessFilePath = @"‪D:\DHL\iCCard3000.mdb";
             ReportCriteria.AccessPassword = "168168";
-            ReportCriteria.ExcelFilePath = @"‪D:\DHL\attendance_tops.xlsx";
+            ReportCriteria.ExcelFilePath = @"D:\DHL\attendance_tops.xlsx";
             ReportCriteria.OutputDir = @"D:\Report";
             ReportCriteria.SearchDate = new DateTime(2017, 6, 1);
             ReportCriteria.IsOption1 = true;
