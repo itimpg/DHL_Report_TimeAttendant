@@ -30,17 +30,9 @@ namespace DHL.Report.TimeAttendance.Managers
         }
         #endregion
 
-        public async Task CreateReportAsync(ReportCriteriaModel criteria)
+        private EmployeeReportResultModel GetMockData()
         {
-            DateTime searchDate = criteria.SearchDate;
-            DateTime searchFrom = new DateTime(searchDate.Year, searchDate.Month, 1);
-            DateTime searchTo = searchFrom.AddMonths(1).AddDays(-1);
-
-            // var hrItems = _excelDataManager.GetHrSource(criteria.ExcelFilePath);
-            // var shiftItems = await _shiftManager.GetShiftsAsync();
-            // var swipeItems = (await _accessDataManager.GetEmployeeSwipeInfo(criteria.AccessFilePath, criteria.AccessPassword, searchFrom, searchTo));
-
-            var result = new EmployeeReportResultModel()
+            return new EmployeeReportResultModel()
             {
                 ReportMonth = new DateTime(2017, 6, 1),
                 Companies = new List<EmployeeReportCompanyModel>
@@ -126,6 +118,19 @@ namespace DHL.Report.TimeAttendance.Managers
                     }
                 }
             };
+        }
+
+        public async Task CreateReportAsync(ReportCriteriaModel criteria)
+        {
+            DateTime searchDate = criteria.SearchDate;
+            DateTime searchFrom = new DateTime(searchDate.Year, searchDate.Month, 1);
+            DateTime searchTo = searchFrom.AddMonths(1).AddDays(-1);
+
+            var accessData = (await _accessDataManager.GetEmployeeSwipeInfo(criteria.AccessFilePath, criteria.AccessPassword, searchFrom, searchTo)).ToList();
+            //var excelData = _excelDataManager.GetHrSource(criteria.ExcelFilePath);
+            //var sqLiteData = await _shiftManager.GetShiftsAsync();
+            
+            var result = GetMockData();
 
             if (criteria.IsOption1)
             {

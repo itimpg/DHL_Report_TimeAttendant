@@ -22,8 +22,9 @@ namespace DHL.Report.TimeAttendance.Models
     public class EmployeeSwipeInfoModel
     {
         public string EmployeeId { get; set; }
-        public bool IsOut { get; set; }
-        public DateTime ReadDate { get; set; }
+        public DateTime DateIn { get; set; }
+        public DateTime DateOut { get; set; }
+        public TimeSpan WorkingTime { get; set; }
     }
 
     public class EmployeeReportResultModel

@@ -37,7 +37,7 @@ namespace DHL.Report.TimeAttendance.Managers
                 try
                 {
                     await connection.OpenAsync();
-                    var query = @"
+                    var queryString = @"
                         SELECT
                             c.f_ConsumerNO, sr.f_InOut, sr.f_ReadDate
                         FROM t_b_consumer c
@@ -46,7 +46,7 @@ namespace DHL.Report.TimeAttendance.Managers
                             AND c.f_CardNo = sr.f_CardNo
                         WHERE sr.f_ReadDate BETWEEN @from AND @to
                         ORDER BY sr.f_ReadDate";
-                    var command = new OleDbCommand(query, connection);
+                    var command = new OleDbCommand(queryString, connection);
                     command.Parameters.Add(new OleDbParameter
                     {
                         ParameterName = "@from",
@@ -62,12 +62,40 @@ namespace DHL.Report.TimeAttendance.Managers
                     var data = new DataTable();
                     data.Load(reader);
 
-                    return data.AsEnumerable().Select(x => new EmployeeSwipeInfoModel
+                    var src = data.AsEnumerable().Select(x => new
                     {
                         EmployeeId = x.Field<string>("f_ConsumerNO").Trim(),
                         IsOut = Convert.ToBoolean(x.Field<byte>("f_InOut")),
                         ReadDate = x.Field<DateTime>("f_ReadDate")
                     });
+
+                    var query =
+                        from q in (
+                            from i in src.Where(x => x.IsOut == false)
+                            join o in src.Where(x => x.IsOut == true)
+                              on i.EmployeeId equals o.EmployeeId
+                            where o.ReadDate > i.ReadDate
+                                && o.EmployeeId == "60009"
+                            group new { i, o } by new { i.EmployeeId, i.ReadDate } into ig
+                            select new
+                            {
+                                EmployeeId = ig.Key.EmployeeId,
+                                DateIn = ig.Key.ReadDate,
+                                DateOut = ig.Min(x => x.o.ReadDate)
+                            }
+                        )
+                        group q by new { q.EmployeeId, q.DateOut } into g
+                        select new EmployeeSwipeInfoModel
+                        {
+                            EmployeeId = g.Key.EmployeeId,
+                            DateIn = g.Max(x => x.DateIn),
+                            DateOut = g.Key.DateOut,
+                            WorkingTime = g.Key.DateOut - g.Max(x => x.DateIn)
+                        };
+
+                    // var qq = query.OrderByDescending(x => x.DateIn).ToList();
+
+                    return query.OrderBy(x => x.DateIn);
                 }
                 catch (OleDbException ex)
                 {
