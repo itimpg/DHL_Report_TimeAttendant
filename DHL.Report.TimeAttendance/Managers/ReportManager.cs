@@ -130,7 +130,7 @@ namespace DHL.Report.TimeAttendance.Managers
                 criteria.AccessFilePath, criteria.AccessPassword, searchDateFrom, searchDateTo));
             var excelData = _excelDataManager.GetHrSource(criteria.ExcelFilePath);
             var sqLiteData = await _shiftManager.GetShiftsAsync();
-            
+
             var src = (from a in accessData
                        join b in excelData on
                            new { a.ReportDate, a.EmployeeId } equals new { ReportDate = b.DataDate, b.EmployeeId } into lb
@@ -139,8 +139,8 @@ namespace DHL.Report.TimeAttendance.Managers
                        from s in lc.DefaultIfEmpty()
                        let dateIn = a.DateIn ?? a.ReportDate
                        let dateOut = a.DateOut ?? a.ReportDate
-                       let workFrom = a.ReportDate.Add(s?.WorkTo ?? TimeSpan.Zero)
-                       let workTo = a.ReportDate.Add(s?.WorkFrom ?? TimeSpan.Zero)
+                       let workFrom = a.ReportDate.Add(s?.WorkFrom ?? TimeSpan.Zero)
+                       let workTo = a.ReportDate.Add(s?.WorkTo ?? TimeSpan.Zero)
                        select new ReportSourceModel
                        {
                            ReportDate = a.ReportDate,
@@ -160,7 +160,10 @@ namespace DHL.Report.TimeAttendance.Managers
                            ShiftName = s?.Name ?? " - ",
                            WorkFrom = workFrom,
                            WorkTo = workTo,
-                       }).ToList();
+                       })
+                       .OrderBy(x => x.EmployeeId).ThenBy(x => x.DateIn)
+                       .Where(x => x.EmployeeId == "10030")
+                       .ToList();
 
             var addList = new List<ReportSourceModel>();
             for (int i = 0; i < src.Count(); i++)
@@ -172,6 +175,8 @@ namespace DHL.Report.TimeAttendance.Managers
                     newItem.DateIn = item.WorkFrom;
                     newItem.NotWorkingTime = TimeSpan.Zero;
                     newItem.WorkingTime = (newItem.DateOut - newItem.DateIn) ?? TimeSpan.Zero;
+                    newItem.IsEarlyOT = false;
+                    newItem.IsLateOT = false;
                     addList.Add(newItem);
 
                     item.DateOut = item.WorkFrom;
@@ -181,12 +186,14 @@ namespace DHL.Report.TimeAttendance.Managers
                 if (item.IsLateOT)
                 {
                     var newItem = CopyFrom(item);
-                    newItem.DateIn = item.WorkTo;
+                    newItem.DateOut = item.WorkTo;
                     newItem.NotWorkingTime = TimeSpan.Zero;
                     newItem.WorkingTime = (newItem.DateOut - newItem.DateIn) ?? TimeSpan.Zero;
+                    newItem.IsEarlyOT = false;
+                    newItem.IsLateOT = false;
                     addList.Add(newItem);
 
-                    item.DateOut = item.WorkTo;
+                    item.DateIn = item.WorkTo;
                     item.WorkingTime = (item.DateOut - item.DateIn) ?? TimeSpan.Zero;
                 }
             }

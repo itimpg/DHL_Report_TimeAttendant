@@ -89,7 +89,7 @@ namespace DHL.Report.TimeAttendance.Models
     public class EmployeeReportSwipeModel
     {
         public int No { get; set; }
-        public DateTime In { get; set; }
+        public DateTime? In { get; set; }
         public DateTime? Out { get; set; }
         public TimeSpan WorkingTime { get; set; }
         public TimeSpan NotWorkingTime { get; set; }

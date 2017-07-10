@@ -94,9 +94,7 @@ namespace DHL.Report.TimeAttendance.Managers
                             DateOut = g.Key.DateOut,
                             WorkingTime = g.Key.DateOut - dateIn,
                         };
-
-                    var xxf = query.ToList();
-
+                    
                     return query.OrderBy(x => x.DateIn);
                 }
                 catch (OleDbException ex)
