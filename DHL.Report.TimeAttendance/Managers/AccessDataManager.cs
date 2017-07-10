@@ -12,7 +12,8 @@ namespace DHL.Report.TimeAttendance.Managers
 {
     public class AccessDataManager : IAccessDataManager
     {
-        public async Task<IEnumerable<EmployeeSwipeInfoModel>> GetEmployeeSwipeInfo(string filePath, string password, DateTime dateFrom, DateTime dateTo)
+        public async Task<IEnumerable<EmployeeSwipeInfoModel>> GetEmployeeSwipeInfo(
+            string filePath, string password, DateTime dateFrom, DateTime dateTo)
         {
             if (string.IsNullOrEmpty(filePath))
             {
@@ -50,16 +51,15 @@ namespace DHL.Report.TimeAttendance.Managers
                     command.Parameters.Add(new OleDbParameter
                     {
                         ParameterName = "@from",
-                        Value = dateFrom
+                        Value = dateFrom,
                     });
                     command.Parameters.Add(new OleDbParameter
                     {
                         ParameterName = "@to",
-                        Value = dateTo
+                        Value = dateTo,
                     });
-                    var reader = await command.ExecuteReaderAsync();
-
                     var data = new DataTable();
+                    var reader = await command.ExecuteReaderAsync();
                     data.Load(reader);
 
                     var src = data.AsEnumerable().Select(x => new
@@ -67,14 +67,10 @@ namespace DHL.Report.TimeAttendance.Managers
                         EmployeeId = x.Field<string>("f_ConsumerNO").Trim(),
                         IsOut = Convert.ToBoolean(x.Field<byte>("f_InOut")),
                         ReadDate = x.Field<DateTime>("f_ReadDate")
-                    }).Where(x => x.EmployeeId == "10004064").OrderBy(x => x.ReadDate);
-
-                    var datx = src.ToList();
+                    });
 
                     var query =
-                        from iX in src.Where(x => x.IsOut == false)
-                        join iY in (
-                            from q in (
+                        from q in (
                                 from i in src.Where(x => x.IsOut == false)
                                 join o in src.Where(x => x.IsOut == true)
                                   on i.EmployeeId equals o.EmployeeId
@@ -87,23 +83,16 @@ namespace DHL.Report.TimeAttendance.Managers
                                     DateOut = ig.Min(x => x.o.ReadDate)
                                 }
                             )
-                            group q by new { q.EmployeeId, q.DateOut } into g
-                            select new
-                            {
-                                EmployeeId = g.Key.EmployeeId,
-                                DateIn = g.Max(x => x.DateIn),
-                                DateOut = g.Key.DateOut,
-                            })
-                        on new { iX.EmployeeId, iX.ReadDate } equals new { iY.EmployeeId, ReadDate = iY.DateIn } into lj
-                        from iZ in lj.DefaultIfEmpty()
+                        group q by new { q.EmployeeId, q.DateOut } into g
+                        let dateIn = g.Max(x => x.DateIn)
                         select new EmployeeSwipeInfoModel
                         {
-                            // TODO: fix report Date
-                            ReportDate = iX.ReadDate.Date,
-                            EmployeeId = iX.EmployeeId,
-                            DateIn = iX.ReadDate,
-                            DateOut = iZ == null ? (DateTime?)null : iZ.DateOut,
-                            WorkingTime = iZ == null ? (TimeSpan?)null : iZ.DateOut - iX.ReadDate
+                            // TODO: fix reportDate 
+                            ReportDate = dateIn.Date,
+                            EmployeeId = g.Key.EmployeeId,
+                            DateIn = dateIn,
+                            DateOut = g.Key.DateOut,
+                            WorkingTime = g.Key.DateOut - dateIn,
                         };
 
                     var xxf = query.ToList();
