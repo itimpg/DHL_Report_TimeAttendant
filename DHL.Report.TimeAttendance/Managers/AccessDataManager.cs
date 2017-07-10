@@ -70,30 +70,37 @@ namespace DHL.Report.TimeAttendance.Managers
                     });
 
                     var query =
-                        from q in (
-                            from i in src.Where(x => x.IsOut == false)
-                            join o in src.Where(x => x.IsOut == true)
-                              on i.EmployeeId equals o.EmployeeId
-                            where o.ReadDate > i.ReadDate
-                                && o.EmployeeId == "60009"
-                            group new { i, o } by new { i.EmployeeId, i.ReadDate } into ig
+                        from iX in src.Where(x => x.IsOut == false)
+                        join iY in (
+                            from q in (
+                                from i in src.Where(x => x.IsOut == false)
+                                join o in src.Where(x => x.IsOut == true)
+                                  on i.EmployeeId equals o.EmployeeId
+                                where o.ReadDate > i.ReadDate
+                                group new { i, o } by new { i.EmployeeId, i.ReadDate } into ig
+                                select new
+                                {
+                                    EmployeeId = ig.Key.EmployeeId,
+                                    DateIn = ig.Key.ReadDate,
+                                    DateOut = ig.Min(x => x.o.ReadDate)
+                                }
+                            )
+                            group q by new { q.EmployeeId, q.DateOut } into g
                             select new
                             {
-                                EmployeeId = ig.Key.EmployeeId,
-                                DateIn = ig.Key.ReadDate,
-                                DateOut = ig.Min(x => x.o.ReadDate)
-                            }
-                        )
-                        group q by new { q.EmployeeId, q.DateOut } into g
+                                EmployeeId = g.Key.EmployeeId,
+                                DateIn = g.Max(x => x.DateIn),
+                                DateOut = g.Key.DateOut,
+                            })
+                        on new { iX.EmployeeId, iX.ReadDate } equals new { iY.EmployeeId, ReadDate = iY.DateIn } into lj
+                        from iZ in lj.DefaultIfEmpty()
                         select new EmployeeSwipeInfoModel
                         {
-                            EmployeeId = g.Key.EmployeeId,
-                            DateIn = g.Max(x => x.DateIn),
-                            DateOut = g.Key.DateOut,
-                            WorkingTime = g.Key.DateOut - g.Max(x => x.DateIn)
+                            EmployeeId = iX.EmployeeId,
+                            DateIn = iX.ReadDate,
+                            DateOut = iZ == null ? (DateTime?)null : iZ.DateOut,
+                            WorkingTime = iZ == null ? (TimeSpan?)null : iZ.DateOut - iX.ReadDate
                         };
-
-                    // var qq = query.OrderByDescending(x => x.DateIn).ToList();
 
                     return query.OrderBy(x => x.DateIn);
                 }

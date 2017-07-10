@@ -23,8 +23,8 @@ namespace DHL.Report.TimeAttendance.Models
     {
         public string EmployeeId { get; set; }
         public DateTime DateIn { get; set; }
-        public DateTime DateOut { get; set; }
-        public TimeSpan WorkingTime { get; set; }
+        public DateTime? DateOut { get; set; }
+        public TimeSpan? WorkingTime { get; set; }
     }
 
     public class EmployeeReportResultModel
