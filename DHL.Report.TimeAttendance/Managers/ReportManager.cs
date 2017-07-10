@@ -162,7 +162,6 @@ namespace DHL.Report.TimeAttendance.Managers
                            WorkTo = workTo,
                        })
                        .OrderBy(x => x.EmployeeId).ThenBy(x => x.DateIn)
-                       .Where(x => x.EmployeeId == "10030")
                        .ToList();
 
             var addList = new List<ReportSourceModel>();
