@@ -45,7 +45,7 @@ namespace DHL.Report.TimeAttendance.Managers
 
                     foreach (var d in data)
                     {
-                        ExcelWorksheet worksheet = package.Workbook.Worksheets.Add($"ประจำวัน {d.Date.ToString("d MMM yyyy")}");
+                        ExcelWorksheet worksheet = package.Workbook.Worksheets.Add(d.Date.Day.ToString("00"));
                         int row = 1;
                         var cells = worksheet.Cells;
 
@@ -146,6 +146,15 @@ namespace DHL.Report.TimeAttendance.Managers
                         allCell.Style.Border.Left.Style = ExcelBorderStyle.Thin;
                         allCell.Style.Border.Right.Style = ExcelBorderStyle.Thin;
                         allCell.Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
+
+                        // set work, no work align center
+                        cells[1, 8, row - 1, 9].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+
+                        // set no align center
+                        cells[1, 5, row - 1, 5].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+
+                        // set employeeId align center
+                        cells[1, 1, row - 1, 1].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
                     }
 
                     string fileName = $"{reportNameTemplate} ({company.Company}).xlsx";
