@@ -71,9 +71,7 @@ namespace DHL.Report.TimeAttendance.Managers
                         EmployeeId = x.Field<string>("f_ConsumerNO").Trim(),
                         IsOut = Convert.ToBoolean(x.Field<byte>("f_InOut")),
                         ReadDate = x.Field<DateTime>("f_ReadDate")
-                    })
-                    .Where(x => x.EmployeeId == "62405");
-
+                    });
 
                     var query =
                         from q in (
@@ -129,9 +127,16 @@ namespace DHL.Report.TimeAttendance.Managers
                                 dayIndex += 1;
                                 item.NotWorkingTime = TimeSpan.Zero;
                             }
-                            item.DayIndex = dayIndex;
+
                             var reportDate = dateFrom.AddDays(dayIndex);
-                            item.ReportDate = dateFrom.AddDays(dayIndex);
+                            if (item.DateIn.HasValue && (item.DateIn.Value - reportDate).TotalDays > 1)
+                            {
+                                reportDate = item.DateIn.Value.Date;
+                                dayIndex = item.DateIn.Value.Day;
+                            }
+
+                            item.DayIndex = dayIndex;
+                            item.ReportDate = reportDate;
                         }
                     }
 
