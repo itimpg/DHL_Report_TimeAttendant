@@ -146,12 +146,8 @@ namespace DHL.Report.TimeAttendance.Managers
                         allCell.Style.Border.Left.Style = ExcelBorderStyle.Thin;
                         allCell.Style.Border.Right.Style = ExcelBorderStyle.Thin;
                         allCell.Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
-
-                        // set work, no work align center
-                        cells[1, 8, row - 1, 9].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
-
-                        // set no align center
-                        cells[1, 5, row - 1, 5].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                        
+                        cells[1, 5, row - 1, 9].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
 
                         // set employeeId align center
                         cells[1, 1, row - 1, 1].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
@@ -288,11 +284,11 @@ namespace DHL.Report.TimeAttendance.Managers
                     cells[1, 3, 1, 5].Merge = true;
                     cells[1, 6].Value = "AVG OT";
                     cells[1, 6, 1, 8].Merge = true;
-                    cells[2, 3].Value = "IN";
-                    cells[2, 4].Value = "OUT";
+                    cells[2, 3].Value = "Start";
+                    cells[2, 4].Value = "End";
                     cells[2, 5].Value = "SUM";
-                    cells[2, 6].Value = "IN";
-                    cells[2, 7].Value = "OUT";
+                    cells[2, 6].Value = "Start";
+                    cells[2, 7].Value = "End";
                     cells[2, 8].Value = "SUM";
                     cells[1, 1, 2, 8].Style.Font.Bold = true;
                     cells[1, 1, 2, 8].Style.Fill.PatternType = ExcelFillStyle.Solid;
