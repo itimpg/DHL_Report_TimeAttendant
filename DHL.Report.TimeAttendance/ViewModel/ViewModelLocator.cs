@@ -12,7 +12,9 @@ using DHL.Report.TimeAttendance.TypeConverters;
 using GalaSoft.MvvmLight.Ioc;
 using Microsoft.Practices.ServiceLocation;
 using System;
+using System.Globalization;
 using System.IO;
+using System.Threading;
 
 namespace DHL.Report.TimeAttendance.ViewModel
 {
@@ -27,6 +29,10 @@ namespace DHL.Report.TimeAttendance.ViewModel
         /// </summary>
         public ViewModelLocator()
         {
+            CultureInfo ci = new CultureInfo("en-US");
+            Thread.CurrentThread.CurrentCulture = ci;
+            Thread.CurrentThread.CurrentUICulture = ci;
+
             ServiceLocator.SetLocatorProvider(() => SimpleIoc.Default);
 
             Mapper.Initialize(cfg =>
