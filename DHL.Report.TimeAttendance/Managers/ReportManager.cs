@@ -185,15 +185,15 @@ namespace DHL.Report.TimeAttendance.Managers
                 if (item.IsLateOT)
                 {
                     var newItem = CopyFrom(item);
-                    newItem.DateOut = item.WorkTo;
+                    newItem.DateIn = item.WorkTo;
                     newItem.NotWorkingTime = TimeSpan.Zero;
                     newItem.WorkingTime = (newItem.DateOut - newItem.DateIn) ?? TimeSpan.Zero;
-                    newItem.IsEarlyOT = false;
-                    newItem.IsLateOT = false;
                     addList.Add(newItem);
 
-                    item.DateIn = item.WorkTo;
+                    item.DateOut = item.WorkTo;
                     item.WorkingTime = (item.DateOut - item.DateIn) ?? TimeSpan.Zero;
+                    item.IsEarlyOT = false;
+                    item.IsLateOT = false;
                 }
             }
 
