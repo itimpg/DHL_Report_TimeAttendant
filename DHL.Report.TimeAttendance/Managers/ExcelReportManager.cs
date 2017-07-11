@@ -73,8 +73,8 @@ namespace DHL.Report.TimeAttendance.Managers
                             cells[row, 5].Value = "No";
                             cells[row, 6].Value = "IN";
                             cells[row, 7].Value = "OUT";
-                            cells[row, 8].Value = employee.TotalWorkingTime.ToString(@"hh\:mm");
-                            cells[row, 9].Value = employee.TotalNotWorkingTime.ToString(@"hh\:mm");
+                            cells[row, 8].Value = employee.TotalWorkingTime.ToData();
+                            cells[row, 9].Value = employee.TotalNotWorkingTime.ToData();
                             cells[row, 1, row, 9].Style.Font.Bold = true;
                             cells[row, 1, row, 4].Style.Font.Color.SetColor(Color.Silver);
                             cells[row, 1, row, 9].Style.Fill.PatternType = ExcelFillStyle.Solid;
@@ -89,10 +89,10 @@ namespace DHL.Report.TimeAttendance.Managers
                                 cells[row, 3].Value = employee.Department;
                                 cells[row, 4].Value = $"{employee.ShiftCode} {employee.ShiftName}";
                                 cells[row, 5].Value = work.No;
-                                cells[row, 6].Value = work.In.HasValue ? work.In.Value.ToString("dd/MM/yyyy HH:mm") : string.Empty;
-                                cells[row, 7].Value = work.Out.HasValue ? work.Out.Value.ToString("dd/MM/yyyy HH:mm") : string.Empty;
-                                cells[row, 8].Value = work.WorkingTime.ToString(@"hh\:mm");
-                                cells[row, 9].Value = work.NotWorkingTime.ToString(@"hh\:mm");
+                                cells[row, 6].Value = work.In.ToData();
+                                cells[row, 7].Value = work.Out.ToData();
+                                cells[row, 8].Value = work.WorkingTime.ToData();
+                                cells[row, 9].Value = work.NotWorkingTime.ToData();
                                 row++;
                             }
                             cells[row, 1].Value = employee.EmployeeId;
@@ -117,8 +117,8 @@ namespace DHL.Report.TimeAttendance.Managers
                             cells[row, 5].Value = "No";
                             cells[row, 6].Value = "IN";
                             cells[row, 7].Value = "OUT";
-                            cells[row, 8].Value = employee.TotalWorkingTimeOT.ToString(@"hh\:mm");
-                            cells[row, 9].Value = employee.TotalNotWorkingTimeOT.ToString(@"hh\:mm");
+                            cells[row, 8].Value = employee.TotalWorkingTimeOT.ToData();
+                            cells[row, 9].Value = employee.TotalNotWorkingTimeOT.ToData();
                             cells[row, 1, row, 9].Style.Font.Bold = true;
                             cells[row, 1, row, 4].Style.Font.Color.SetColor(Color.Silver);
                             cells[row, 1, row, 9].Style.Fill.PatternType = ExcelFillStyle.Solid;
@@ -133,10 +133,10 @@ namespace DHL.Report.TimeAttendance.Managers
                                 cells[row, 3].Value = employee.Department;
                                 cells[row, 4].Value = $"{employee.ShiftCode} {employee.ShiftName}";
                                 cells[row, 5].Value = work.No;
-                                cells[row, 6].Value = work.In.HasValue ? work.In.Value.ToString("dd/MM/yyyy HH:mm") : string.Empty;
-                                cells[row, 7].Value = work.Out.HasValue ? work.Out.Value.ToString("dd/MM/yyyy HH:mm") : string.Empty;
-                                cells[row, 8].Value = work.WorkingTime.ToString(@"hh\:mm");
-                                cells[row, 9].Value = work.NotWorkingTime.ToString(@"hh\:mm");
+                                cells[row, 6].Value = work.In.ToData();
+                                cells[row, 7].Value = work.Out.ToData();
+                                cells[row, 8].Value = work.WorkingTime.ToData();
+                                cells[row, 9].Value = work.NotWorkingTime.ToData();
                                 row++;
                             }
                         }
@@ -230,16 +230,16 @@ namespace DHL.Report.TimeAttendance.Managers
                         cells[row, 2].Value = emp.Name;
                         cells[row, 3].Value = emp.Dept;
                         cells[row, 4].Value = emp.Shift;
-                        cells[row, 5].Value = emp.StartWork.HasValue ? emp.StartWork.Value.ToString("dd/MM/yyyy HH:mm") : string.Empty;
-                        cells[row, 6].Value = emp.EndWork.HasValue ? emp.EndWork.Value.ToString("dd/MM/yyyy HH:mm") : string.Empty;
-                        cells[row, 7].Value = emp.TotalIn.ToString(@"hh\:mm");
-                        cells[row, 8].Value = emp.TotalOut.ToString(@"hh\:mm");
-                        cells[row, 9].Value = emp.Sum.ToString(@"hh\:mm");
-                        cells[row, 10].Value = emp.StartWorkOT.HasValue ? emp.StartWorkOT.Value.ToString("dd/MM/yyyy HH:mm") : string.Empty;
-                        cells[row, 11].Value = emp.EndWorkOT.HasValue ? emp.EndWorkOT.Value.ToString("dd/MM/yyyy HH:mm") : string.Empty;
-                        cells[row, 12].Value = emp.TotalInOT.ToString(@"hh\:mm");
-                        cells[row, 13].Value = emp.TotalOutOT.ToString(@"hh\:mm");
-                        cells[row, 14].Value = emp.SumOT.ToString(@"hh\:mm");
+                        cells[row, 5].Value = emp.StartWork.ToData();
+                        cells[row, 6].Value = emp.EndWork.ToData();
+                        cells[row, 7].Value = emp.TotalIn.ToData();
+                        cells[row, 8].Value = emp.TotalOut.ToData();
+                        cells[row, 9].Value = emp.Sum.ToData();
+                        cells[row, 10].Value = emp.StartWorkOT.ToData();
+                        cells[row, 11].Value = emp.EndWorkOT.ToData();
+                        cells[row, 12].Value = emp.TotalInOT.ToData();
+                        cells[row, 13].Value = emp.TotalOutOT.ToData();
+                        cells[row, 14].Value = emp.SumOT.ToData();
 
                         row++;
                     }
@@ -308,12 +308,12 @@ namespace DHL.Report.TimeAttendance.Managers
                     {
                         cells[row, 1].Value = d.Dept;
                         cells[row, 2].Value = d.Shift;
-                        cells[row, 3].Value = d.AvgIn.ToString(@"hh\:mm");
-                        cells[row, 4].Value = d.AvgOut.ToString(@"hh\:mm");
-                        cells[row, 5].Value = d.TotalSum.ToString(@"hh\:mm");
-                        cells[row, 6].Value = d.AvgInOT.ToString(@"hh\:mm");
-                        cells[row, 7].Value = d.AvgOutOT.ToString(@"hh\:mm");
-                        cells[row, 8].Value = d.TotalSumOT.ToString(@"hh\:mm");
+                        cells[row, 3].Value = d.AvgIn.ToData();
+                        cells[row, 4].Value = d.AvgOut.ToData();
+                        cells[row, 5].Value = d.TotalSum.ToData();
+                        cells[row, 6].Value = d.AvgInOT.ToData();
+                        cells[row, 7].Value = d.AvgOutOT.ToData();
+                        cells[row, 8].Value = d.TotalSumOT.ToData();
 
                         row++;
                     }
@@ -395,10 +395,10 @@ namespace DHL.Report.TimeAttendance.Managers
                             cells[row, 2].Value = emp.Name;
                             cells[row, 3].Value = emp.Dept;
                             cells[row, 4].Value = emp.Shift;
-                            cells[row, 5].Value = emp.Work.ToString(@"hh\:mm");
-                            cells[row, 6].Value = emp.NoWork.ToString(@"hh\:mm");
-                            cells[row, 7].Value = emp.WorkOT.ToString(@"hh\:mm");
-                            cells[row, 8].Value = emp.NoWorkOT.ToString(@"hh\:mm");
+                            cells[row, 5].Value = emp.Work.ToData();
+                            cells[row, 6].Value = emp.NoWork.ToData();
+                            cells[row, 7].Value = emp.WorkOT.ToData();
+                            cells[row, 8].Value = emp.NoWorkOT.ToData();
 
                             row++;
                         }
