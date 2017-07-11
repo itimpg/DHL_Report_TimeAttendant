@@ -71,8 +71,7 @@ namespace DHL.Report.TimeAttendance.Managers
                         EmployeeId = x.Field<string>("f_ConsumerNO").Trim(),
                         IsOut = Convert.ToBoolean(x.Field<byte>("f_InOut")),
                         ReadDate = x.Field<DateTime>("f_ReadDate")
-                    }).Where(x => x.EmployeeId == "10030");
-
+                    });
                     var query =
                         from q in (
                                 from i in src.Where(x => x.IsOut == false)
@@ -131,8 +130,6 @@ namespace DHL.Report.TimeAttendance.Managers
                             item.ReportDate = dateFrom.AddDays(dayIndex);
                         }
                     }
-
-                    var result = employees.SelectMany(x => x.Items).OrderBy(x => x.EmployeeId).ThenBy(x => x.DateIn).ToList();
 
                     return employees
                         .SelectMany(x => x.Items.Where(r => r.ReportDate > dateFrom && r.ReportDate < dateTo))

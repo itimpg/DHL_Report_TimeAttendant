@@ -203,7 +203,7 @@ namespace DHL.Report.TimeAttendance.Managers
                 .Select(g => new EmployeeReportCompanyModel
                 {
                     Company = g.Key,
-                    Employees = g.GroupBy(x => new EmployeeReportModel
+                    Employees = g.GroupBy(x => new
                     {
                         ReportDate = x.ReportDate,
                         EmployeeId = x.EmployeeId,
@@ -227,9 +227,7 @@ namespace DHL.Report.TimeAttendance.Managers
                             Out = x.DateOut,
                             WorkingTime = x.WorkingTime,
                             NotWorkingTime = x.NotWorkingTime,
-                        })
-                        .OrderBy(x => x.In)
-                        .ToList(),
+                        }).OrderBy(x => x.In).ToList(),
                         OtSwipes = ge.Where(x => x.IsEarlyOT || x.IsLateOT).Select((x, i) => new EmployeeReportSwipeModel
                         {
                             No = i + 1,
@@ -237,9 +235,7 @@ namespace DHL.Report.TimeAttendance.Managers
                             Out = x.DateOut,
                             WorkingTime = x.WorkingTime,
                             NotWorkingTime = x.NotWorkingTime,
-                        })
-                        .OrderBy(x => x.In)
-                        .ToList(),
+                        }).OrderBy(x => x.In).ToList()
                     })
                     .OrderBy(x => x.ReportDate)
                     .ThenBy(x => x.EmployeeId)
