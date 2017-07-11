@@ -19,12 +19,27 @@
             <i:InvokeCommandAction Command="{Binding OnLoadCommand}" />
         </i:EventTrigger>
     </i:Interaction.Triggers>
-    <StackPanel>
-        <Image Source="../Assets/dhl_logo.jpg"/>
-        <TextBlock HorizontalAlignment="Center" Text="DHL Time Attendant Reporting" />
-        <TextBlock HorizontalAlignment="Center" 
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="10"/>
+        </Grid.RowDefinitions>
+        <StackPanel Grid.Row="0">
+            <Image Source="../Assets/dhl_logo.jpg"/>
+            <TextBlock HorizontalAlignment="Center" Text="DHL Time Attendant Reporting" />
+            <TextBlock HorizontalAlignment="Center" 
                    Text="{Binding AboutModel.Version, StringFormat=Version: {0}}" />
-        <TextBlock HorizontalAlignment="Center" 
+            <TextBlock HorizontalAlignment="Center" 
                    Text="{Binding AboutModel.LatestUpdatedDate, StringFormat=Build: {0:yyyyMMdd}}"/>
-    </StackPanel>
+        </StackPanel>
+        <StackPanel Grid.Row="1">
+            <TextBlock HorizontalAlignment="Center"
+                   Text="Develop By iTech Evolution Co.,LTD"/>
+            <TextBlock HorizontalAlignment="Center"
+                   Text="+668 1488 8410"/>
+            <TextBlock HorizontalAlignment="Center"
+                   Text="Engineer.itec@gmail.com"/>
+        </StackPanel>
+    </Grid>
 </Controls:MetroWindow>

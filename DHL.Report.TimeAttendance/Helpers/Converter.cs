@@ -6,7 +6,7 @@ namespace DHL.Report.TimeAttendance.Helpers
     {
         public static string ToData(this TimeSpan ts)
         {
-            return $"{ts.TotalHours.ToString("00")}:{ts.Minutes.ToString("00")}";
+            return $"{(ts.Days * 24 + ts.Hours).ToString("00")}:{ts.Minutes.ToString("00")}";
         }
 
         public static string ToData(this TimeSpan? ts)

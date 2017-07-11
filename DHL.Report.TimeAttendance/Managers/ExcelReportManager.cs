@@ -259,6 +259,8 @@ namespace DHL.Report.TimeAttendance.Managers
                     allCell.Style.Border.Right.Style = ExcelBorderStyle.Thin;
                     allCell.Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
 
+                    cells[1, 5, row - 1, 14].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+
                     string fileName = $"{reportNameTemplate} ({company.Company}).xlsx";
                     string filePath = Path.Combine(dirPath, fileName);
                     package.SaveAs(new FileInfo(filePath));
@@ -298,18 +300,48 @@ namespace DHL.Report.TimeAttendance.Managers
                     cells[1, 1, 2, 8].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
                     cells[1, 1, 2, 8].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
 
-                    var data = company.Employees
+                    var xx = company.Employees
                         .GroupBy(x => new { x.Department, x.ShiftCode, x.ShiftName })
                         .Select(g => new
                         {
                             Dept = g.Key.Department,
                             Shift = $"{g.Key.ShiftCode} {g.Key.ShiftName}",
-                            AvgIn = g.Select(x => x.TotalWorkingTime).Average(),
-                            AvgOut = g.Select(x => x.TotalNotWorkingTime).Average(),
+                            StartWork = g
+                                .GroupBy(x => new { x.ReportDate, x.EmployeeId })
+                                .Select(x => x.SelectMany(a => a.WorkingSwipes.Select(b => b.In)).Min())
+                                .Where(x => x.HasValue)
+                                .Select(x => x.Value.TimeOfDay),
+                            EndWork = g
+                                .GroupBy(x => new { x.ReportDate, x.EmployeeId })
+                                .Select(x => x.SelectMany(a => a.WorkingSwipes.Select(b => b.Out)).Max())
+                                .Where(x => x.HasValue)
+                                .Select(x => x.Value.TimeOfDay),
                             TotalSum = g.Select(x => x.TotalWorkingTime + x.TotalNotWorkingTime).Average(),
-                            AvgInOT = g.Select(x => x.TotalWorkingTimeOT).Average(),
-                            AvgOutOT = g.Select(x => x.TotalNotWorkingTimeOT).Average(),
+                            StartWorkOT = g
+                                .GroupBy(x => new { x.ReportDate, x.EmployeeId })
+                                .Select(x => x.SelectMany(a => a.OtSwipes.Select(b => b.In)).Min())
+                                .Where(x => x.HasValue)
+                                .Select(x => x.Value.TimeOfDay),
+                            EndWorkOT = g
+                                .GroupBy(x => new { x.ReportDate, x.EmployeeId })
+                                .Select(x => x.SelectMany(a => a.OtSwipes.Select(b => b.Out)).Max())
+                                .Where(x => x.HasValue)
+                                .Select(x => x.Value.TimeOfDay),
                             TotalSumOT = g.Select(x => x.TotalWorkingTimeOT + x.TotalNotWorkingTimeOT).Average(),
+                        });
+
+                    var gg = xx.ToList();
+                    var data = gg
+                        .Select(x => new
+                        {
+                            x.Dept,
+                            x.Shift,
+                            x.TotalSum,
+                            x.TotalSumOT,
+                            AvgIn = x.StartWork.Count() > 0 ? x.StartWork.Average() : TimeSpan.Zero,
+                            AvgOut = x.EndWork.Count() > 0 ? x.EndWork.Average() : TimeSpan.Zero,
+                            AvgInOT = x.StartWorkOT.Count() > 0 ? x.StartWorkOT.Average() : TimeSpan.Zero,
+                            AvgOutOT = x.EndWorkOT.Count() > 0 ? x.EndWorkOT.Average() : TimeSpan.Zero,
                         });
 
                     int row = 3;
@@ -333,6 +365,8 @@ namespace DHL.Report.TimeAttendance.Managers
                     allCell.Style.Border.Left.Style = ExcelBorderStyle.Thin;
                     allCell.Style.Border.Right.Style = ExcelBorderStyle.Thin;
                     allCell.Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
+
+                    cells[1, 3, row - 1, 8].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
 
                     string fileName = $"{reportNameTemplate} ({company.Company}).xlsx";
                     string filePath = Path.Combine(dirPath, fileName);
@@ -418,6 +452,8 @@ namespace DHL.Report.TimeAttendance.Managers
                         allCell.Style.Border.Left.Style = ExcelBorderStyle.Thin;
                         allCell.Style.Border.Right.Style = ExcelBorderStyle.Thin;
                         allCell.Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
+
+                        cells[1, 5, row - 1, 8].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
 
                         string fileName = $"{reportNameTemplate} ({company.Company}).xlsx";
                         string filePath = Path.Combine(dirPath, fileName);

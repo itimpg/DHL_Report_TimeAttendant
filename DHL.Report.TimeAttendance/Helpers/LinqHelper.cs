@@ -11,6 +11,11 @@ namespace DHL.Report.TimeAttendance.Helpers
             return new TimeSpan((long)source.Average(x => x.Ticks));
         }
 
+        public static TimeSpan Average(this IEnumerable<TimeSpan?> source)
+        {
+            return new TimeSpan((long)source.Where(x => x.HasValue).Average(x => x.Value.Ticks));
+        }
+
         public static IEnumerable<TResult> SelectWithPrev<TSource, TResult>
             (this IEnumerable<TSource> source,
             Func<TSource, TSource, bool, TResult> projection)
