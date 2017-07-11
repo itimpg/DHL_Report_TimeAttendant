@@ -104,42 +104,17 @@ namespace DHL.Report.TimeAttendance.Managers
                             EmployeeId = g.Key,
                             Items = g.SelectWithPrev((cur, prev, isfirst) => new EmployeeSwipeInfoModel
                             {
-                                DayIndex = 0,
                                 EmployeeId = cur.EmployeeId,
                                 DateIn = cur.DateIn,
                                 DateOut = cur.DateOut,
                                 WorkingTime = cur.DateOut - cur.DateIn,
-                                NotWorkingTime = isfirst ? TimeSpan.Zero : (cur.DateIn - prev.DateOut)
+                                NotWorkingTime = isfirst || (cur.DateIn - prev.DateOut).TotalHours > 4 ? TimeSpan.Zero : (cur.DateIn - prev.DateOut),
+                                ReportDate = (isfirst || (cur.DateIn - prev.DateOut).TotalHours > 4 ? TimeSpan.Zero : (cur.DateIn - prev.DateOut)) == TimeSpan.Zero ?
+                                    cur.DateIn.Date : prev.DateIn.Date
                             })
                             .OrderBy(x => x.DateIn)
-                            .ToList()
-                        })
-                        .ToList();
-
-                    foreach (var e in employees)
-                    {
-                        int dayIndex = 0;
-                        for (int i = 0; i < e.Items.Count; i++)
-                        {
-                            var item = e.Items[i];
-                            if (item.NotWorkingTime.GetValueOrDefault().TotalHours > 4)
-                            {
-                                dayIndex += 1;
-                                item.NotWorkingTime = TimeSpan.Zero;
-                            }
-
-                            var reportDate = dateFrom.AddDays(dayIndex);
-                            if (item.DateIn.HasValue && (item.DateIn.Value - reportDate).TotalDays > 1)
-                            {
-                                reportDate = item.DateIn.Value.Date;
-                                dayIndex = item.DateIn.Value.Day;
-                            }
-
-                            item.DayIndex = dayIndex;
-                            item.ReportDate = reportDate;
-                        }
-                    }
-
+                        });
+                    
                     return employees
                         .SelectMany(x => x.Items.Where(r => r.ReportDate > dateFrom && r.ReportDate < dateTo))
                         .OrderBy(x => x.EmployeeId)
