@@ -1,5 +1,6 @@
 ﻿using DHL.Report.TimeAttendance.Managers.Interfaces;
 using DHL.Report.TimeAttendance.Models;
+using DHL.Report.TimeAttendance.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -35,6 +36,9 @@ namespace DHL.Report.TimeAttendance.Managers
             string connectionString = $@"Provider=Microsoft.ACE.OLEDB.12.0; Data Source={filePath};Persist Security Info=False; Jet OLEDB:Database Password={password};";
             using (var connection = new OleDbConnection(connectionString))
             {
+                dateFrom = dateFrom.AddDays(-1);
+                dateTo = dateTo.AddDays(1);
+
                 try
                 {
                     await connection.OpenAsync();
@@ -67,7 +71,7 @@ namespace DHL.Report.TimeAttendance.Managers
                         EmployeeId = x.Field<string>("f_ConsumerNO").Trim(),
                         IsOut = Convert.ToBoolean(x.Field<byte>("f_InOut")),
                         ReadDate = x.Field<DateTime>("f_ReadDate")
-                    });
+                    }).Where(x => x.EmployeeId == "10030");
 
                     var query =
                         from q in (
@@ -85,17 +89,55 @@ namespace DHL.Report.TimeAttendance.Managers
                             )
                         group q by new { q.EmployeeId, q.DateOut } into g
                         let dateIn = g.Max(x => x.DateIn)
-                        select new EmployeeSwipeInfoModel
+                        select new
                         {
-                            // TODO: fix reportDate 
-                            ReportDate = dateIn.Date,
                             EmployeeId = g.Key.EmployeeId,
                             DateIn = dateIn,
                             DateOut = g.Key.DateOut,
-                            WorkingTime = g.Key.DateOut - dateIn,
                         };
-                    
-                    return query.OrderBy(x => x.DateIn);
+
+                    var employees = query
+                        .OrderBy(x => x.DateIn)
+                        .GroupBy(x => x.EmployeeId)
+                        .Select(g => new
+                        {
+                            EmployeeId = g.Key,
+                            Items = g.SelectWithPrev((cur, prev, isfirst) => new EmployeeSwipeInfoModel
+                            {
+                                DayIndex = 0,
+                                EmployeeId = cur.EmployeeId,
+                                DateIn = cur.DateIn,
+                                DateOut = cur.DateOut,
+                                WorkingTime = cur.DateOut - cur.DateIn,
+                                NotWorkingTime = isfirst ? TimeSpan.Zero : (cur.DateIn - prev.DateOut)
+                            })
+                            .OrderBy(x => x.DateIn)
+                            .ToList()
+                        })
+                        .ToList();
+
+                    foreach (var e in employees)
+                    {
+                        int dayIndex = 0;
+                        for (int i = 0; i < e.Items.Count; i++)
+                        {
+                            var item = e.Items[i];
+                            if (item.NotWorkingTime.GetValueOrDefault().TotalHours > 8)
+                            {
+                                dayIndex += 1;
+                                item.NotWorkingTime = TimeSpan.Zero;
+                            }
+                            item.DayIndex = dayIndex;
+                            item.ReportDate = dateFrom.AddDays(dayIndex);
+                        }
+                    }
+
+                    var result = employees.SelectMany(x => x.Items).OrderBy(x => x.EmployeeId).ThenBy(x => x.DateIn).ToList();
+
+                    return employees
+                        .SelectMany(x => x.Items.Where(r => r.ReportDate > dateFrom && r.ReportDate < dateTo))
+                        .OrderBy(x => x.EmployeeId)
+                        .ThenBy(x => x.DateIn);
                 }
                 catch (OleDbException ex)
                 {

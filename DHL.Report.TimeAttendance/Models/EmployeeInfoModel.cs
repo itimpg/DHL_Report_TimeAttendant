@@ -16,6 +16,7 @@ namespace DHL.Report.TimeAttendance.Models
 
     public class EmployeeSwipeInfoModel
     {
+        public int DayIndex { get; set; }
         public DateTime ReportDate { get; set; }
         public string EmployeeId { get; set; }
         public DateTime? DateIn { get; set; }
