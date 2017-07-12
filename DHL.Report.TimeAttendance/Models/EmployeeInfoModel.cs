@@ -110,7 +110,5 @@ namespace DHL.Report.TimeAttendance.Models
         public string Department { get; internal set; }
         public string ShiftCode { get; internal set; }
         public string ShiftName { get; internal set; }
-        public DateTime WorkFrom { get; internal set; }
-        public DateTime WorkTo { get; internal set; }
     }
 }
