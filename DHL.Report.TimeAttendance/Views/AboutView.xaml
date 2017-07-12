@@ -35,7 +35,7 @@
         </StackPanel>
         <StackPanel Grid.Row="1">
             <TextBlock HorizontalAlignment="Center"
-                   Text="Develop By iTech Evolution Co.,LTD"/>
+                   Text="Developed by iTech Evolution Corporate Co.,Ltd."/>
             <TextBlock HorizontalAlignment="Center"
                    Text="+668 1488 8410"/>
             <TextBlock HorizontalAlignment="Center"

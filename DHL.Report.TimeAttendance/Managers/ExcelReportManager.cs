@@ -401,7 +401,7 @@ namespace DHL.Report.TimeAttendance.Managers
 
                     foreach (var d in data)
                     {
-                        ExcelWorksheet worksheet = package.Workbook.Worksheets.Add($"ประจำวัน {d.Date.ToString("d MMM yyyy")} รวม");
+                        ExcelWorksheet worksheet = package.Workbook.Worksheets.Add(d.Date.Day.ToString("00"));
 
                         var cells = worksheet.Cells;
 
