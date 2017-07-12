@@ -65,8 +65,8 @@ Source: "D:\DHL_Report_TimeAttendant\DHL.Report.TimeAttendance\bin\Release\Syste
 Source: "D:\DHL_Report_TimeAttendant\DHL.Report.TimeAttendance\bin\Release\System.Data.SQLite.Linq.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "D:\DHL_Report_TimeAttendant\DHL.Report.TimeAttendance\bin\Release\System.Data.SQLite.xml"; DestDir: "{app}"; Flags: ignoreversion
 Source: "D:\DHL_Report_TimeAttendant\DHL.Report.TimeAttendance\bin\Release\System.Windows.Interactivity.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "D:\DHL_Report_TimeAttendant\DHL.Report.TimeAttendance\bin\Release\System.Windows.Interactivity.dll"; DestDir: "{app}"; Flags: ignoreversion  
-Source: "D:\DHL_Report_TimeAttendant\DHL.Report.TimeAttendance\bin\Release\Assets"; DestDir: "{app}\Assets"; Flags: ignoreversion
+Source: "D:\DHL_Report_TimeAttendant\DHL.Report.TimeAttendance\bin\Release\System.Windows.Interactivity.dll"; DestDir: "{app}"; Flags: ignoreversion    
+Source: "D:\DHL_Report_TimeAttendant\DHL.Report.TimeAttendance\bin\Release\Assets\*"; DestDir: "{app}\Assets"; Flags: ignoreversion 
 Source: "D:\DHL_Report_TimeAttendant\DHL.Report.TimeAttendance\bin\Release\x64\*"; DestDir: "{app}\x64"; Flags: ignoreversion 
 Source: "D:\DHL_Report_TimeAttendant\DHL.Report.TimeAttendance\bin\Release\x86\*"; DestDir: "{app}\x86"; Flags: ignoreversion 
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
