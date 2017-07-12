@@ -87,13 +87,10 @@ namespace DHL.Report.TimeAttendance.ViewModel
                     IsLoading = true;
                     try
                     {
-                        await Task.Run(async () =>
-                        {
-                            await _shiftManager.SaveShiftAsync(model);
+                        await _shiftManager.SaveShiftAsync(model);
 
-                            Messenger.Default.Send(new DataChangedNotificationMessage("Camera Changed", DataChangedType.Shift));
-                            Messenger.Default.Send(new CloseWindowNotificationMessage("Closed", WindowType.Shift));
-                        });
+                        Messenger.Default.Send(new DataChangedNotificationMessage("Camera Changed", DataChangedType.Shift));
+                        Messenger.Default.Send(new CloseWindowNotificationMessage("Closed", WindowType.Shift));
                     }
                     catch (Exception ex)
                     {
