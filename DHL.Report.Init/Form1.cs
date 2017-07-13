@@ -68,7 +68,7 @@ namespace DHL.Report.Init
             {
                 Cursor.Current = Cursors.WaitCursor;
 
-                List<ExcelItem> excelItems;
+                List<ExcelItem> excelItems = null;
                 // read excel
                 var extension = Path.GetExtension(excelFile).ToLower();
                 using (var stream = File.Open(excelFile, FileMode.Open, FileAccess.Read))
@@ -81,18 +81,28 @@ namespace DHL.Report.Init
                         var dt = reader.AsDataSet().Tables[0];
 
                         // todo: specific column name
-                        string employeeNoColumn = "EmpNo";
-                        string scanIdColumn = "ScanId";
+                        string employeeNoColumn = "f_ConsumerNO";
+                        string scanIdColumn = "f_CardNO";
                         if (!dt.Columns.Contains(employeeNoColumn) && !dt.Columns.Contains(scanIdColumn))
                         {
                             MessageBox.Show("Excel ผิดฟอร์แมท");
+                            return;
                         }
 
-                        excelItems = dt.AsEnumerable().Select(x => new ExcelItem
-                        {
-                            EmployeeNo = x.Field<string>(employeeNoColumn),
-                            ScanId = x.Field<string>(scanIdColumn)
-                        }).ToList();
+                        int tryParse = 0;
+                        excelItems = dt.AsEnumerable()
+                            .Where(x => x[employeeNoColumn] != DBNull.Value && x[scanIdColumn] != DBNull.Value)
+                            .Select(x => new
+                            {
+                                EmployeeNo = x[employeeNoColumn].ToString(),
+                                ScanId = x[scanIdColumn].ToString().TrimStart('0')
+                            })
+                            .Where(x => int.TryParse(x.ScanId, out tryParse))
+                            .Select(x => new ExcelItem
+                            {
+                                EmployeeNo = x.EmployeeNo,
+                                ScanId = int.Parse(x.ScanId)
+                            }).ToList();
                     }
                 }
 
@@ -122,7 +132,7 @@ namespace DHL.Report.Init
                                     ParameterName = "@scan_id",
                                     Value = item.ScanId,
                                 });
-                                command.ExecuteNonQuery();
+                                int affectRow = command.ExecuteNonQuery();
                             }
                         }
                     }
@@ -135,6 +145,8 @@ namespace DHL.Report.Init
                         connection.Close();
                     }
                 }
+
+                MessageBox.Show("ทำการ map เสร็จสิ้น");
             }
             catch (Exception ex)
             {
@@ -150,6 +162,6 @@ namespace DHL.Report.Init
     public class ExcelItem
     {
         public string EmployeeNo { get; set; }
-        public string ScanId { get; set; }
+        public int ScanId { get; set; }
     }
 }
