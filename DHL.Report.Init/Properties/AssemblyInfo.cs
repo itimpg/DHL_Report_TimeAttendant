@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("DHL.Report.Init")]
+[assembly: AssemblyTitle("Access Excel Mapper")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("DHL.Report.Init")]
+[assembly: AssemblyCompany("iTech Evolution Corporate Co.,Ltd.")]
+[assembly: AssemblyProduct("Access Excel Mapper")]
 [assembly: AssemblyCopyright("Copyright ©  2017")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]

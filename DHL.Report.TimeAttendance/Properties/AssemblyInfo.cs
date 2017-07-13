@@ -7,10 +7,10 @@ using System.Windows;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("DHL.Report.TimeAttendance")]
+[assembly: AssemblyTitle("PELA")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("iTech Evolution Corporate Co.,Ltd.")]
 [assembly: AssemblyProduct("DHL.Report.TimeAttendance")]
 [assembly: AssemblyCopyright("Copyright ©  2017")]
 [assembly: AssemblyTrademark("")]
