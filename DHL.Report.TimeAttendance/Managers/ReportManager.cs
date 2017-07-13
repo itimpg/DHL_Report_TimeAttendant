@@ -40,7 +40,7 @@ namespace DHL.Report.TimeAttendance.Managers
                 criteria.AccessFilePath, criteria.AccessPassword, searchDateFrom, searchDateTo));
             var excelData = _excelDataManager.GetHrSource(criteria.ExcelFilePath);
             var sqLiteData = await _shiftManager.GetShiftsAsync();
-            
+
             var src = (from a in accessData
                        join b in excelData on
                            new { a.ReportDate, a.EmployeeId, a.IsInvalid } equals new { ReportDate = b.DataDate, b.EmployeeId, IsInvalid = false } into lb
@@ -57,7 +57,7 @@ namespace DHL.Report.TimeAttendance.Managers
                            ShiftCode = (e?.ShiftCode ?? " - "),
                            ShiftName = s?.Name ?? " - ",
                            WorkFrom = a.ReportDate.Add(s?.WorkFrom ?? TimeSpan.Zero),
-                           WorkTo = a.ReportDate.Add(s?.WorkTo ?? TimeSpan.Zero),
+                           WorkTo = a.ReportDate.Add(s?.WorkTo ?? TimeSpan.Zero).AddDays(s != null && s.WorkFrom > s.WorkTo ? 1 : 0),
                        } into g
                        select new
                        {
