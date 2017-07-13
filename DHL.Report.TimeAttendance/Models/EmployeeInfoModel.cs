@@ -22,6 +22,8 @@ namespace DHL.Report.TimeAttendance.Models
         public DateTime? DateOut { get; set; }
         public TimeSpan? WorkingTime { get; set; }
         public TimeSpan? NotWorkingTime { get; set; }
+
+        public bool IsInvalid { get; set; }
     }
 
     public class EmployeeReportResultModel

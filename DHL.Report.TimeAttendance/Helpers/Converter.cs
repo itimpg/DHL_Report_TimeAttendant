@@ -13,7 +13,7 @@ namespace DHL.Report.TimeAttendance.Helpers
         {
             if (!ts.HasValue)
             {
-                return TimeSpan.Zero.ToString(@"hh\:mm");
+                return " - ";
             }
             return ToData(ts.Value);
         }
@@ -27,7 +27,7 @@ namespace DHL.Report.TimeAttendance.Helpers
         {
             if (!dt.HasValue)
             {
-                return string.Empty;
+                return " - ";
             }
             return ToData(dt.Value);
         }

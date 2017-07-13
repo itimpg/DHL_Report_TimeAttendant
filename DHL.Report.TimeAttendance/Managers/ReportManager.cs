@@ -40,10 +40,10 @@ namespace DHL.Report.TimeAttendance.Managers
                 criteria.AccessFilePath, criteria.AccessPassword, searchDateFrom, searchDateTo));
             var excelData = _excelDataManager.GetHrSource(criteria.ExcelFilePath);
             var sqLiteData = await _shiftManager.GetShiftsAsync();
-
+            
             var src = (from a in accessData
                        join b in excelData on
-                           new { a.ReportDate, a.EmployeeId } equals new { ReportDate = b.DataDate, b.EmployeeId } into lb
+                           new { a.ReportDate, a.EmployeeId, a.IsInvalid } equals new { ReportDate = b.DataDate, b.EmployeeId, IsInvalid = false } into lb
                        from e in lb.DefaultIfEmpty()
                        join c in sqLiteData on e?.ShiftCode ?? string.Empty equals c.Code into lc
                        from s in lc.DefaultIfEmpty()
@@ -65,10 +65,11 @@ namespace DHL.Report.TimeAttendance.Managers
                            Items = from x in g
                                    select new
                                    {
-                                       DateIn = x.a.DateIn ?? x.a.ReportDate,
-                                       DateOut = x.a.DateOut ?? x.a.ReportDate,
+                                       DateIn = x.a.DateIn,
+                                       DateOut = x.a.DateOut,
                                        WorkingTime = x.a.WorkingTime ?? TimeSpan.Zero,
                                        NotWorkingTime = x.a.NotWorkingTime ?? TimeSpan.Zero,
+                                       IsInvalid = x.a.IsInvalid
                                    },
                        });
 
@@ -77,13 +78,13 @@ namespace DHL.Report.TimeAttendance.Managers
                        {
                            s.Key,
                            HasEarlyWork = s.Items
-                                .Where(x => x.DateIn < s.Key.WorkFrom)
+                                .Where(x => !x.IsInvalid && x.DateIn < s.Key.WorkFrom)
                                 .Select(x => (s.Key.WorkFrom < x.DateOut ? s.Key.WorkFrom : x.DateOut) - x.DateIn)
-                                .Aggregate(TimeSpan.Zero, (time, x) => time + x).TotalHours > 2,
+                                .Aggregate(TimeSpan.Zero, (time, x) => time + x ?? TimeSpan.Zero).TotalHours > 2,
                            HasLatelyWork = s.Items
-                                .Where(x => x.DateOut > s.Key.WorkTo)
+                                .Where(x => !x.IsInvalid && x.DateOut > s.Key.WorkTo)
                                 .Select(x => x.DateOut - (s.Key.WorkTo < x.DateIn ? x.DateIn : s.Key.WorkTo))
-                                .Aggregate(TimeSpan.Zero, (time, x) => time + x).TotalHours > 2,
+                                .Aggregate(TimeSpan.Zero, (time, x) => time + x ?? TimeSpan.Zero).TotalHours > 2,
                            Items = s.Items,
                        };
 
@@ -107,51 +108,54 @@ namespace DHL.Report.TimeAttendance.Managers
                         NotWorkingTime = i.NotWorkingTime,
                     };
 
-                    if (s.HasEarlyWork && i.DateIn < s.Key.WorkFrom)
+                    if (!i.IsInvalid)
                     {
-                        item.IsEarlyOT = true;
-                        if (i.DateOut > s.Key.WorkFrom)
+                        if (s.HasEarlyWork && i.DateIn < s.Key.WorkFrom)
                         {
-                            item.DateOut = s.Key.WorkFrom;
-                            item.WorkingTime = (item.DateOut - item.DateIn) ?? TimeSpan.Zero;
-                            itemsSource.Add(new ReportSourceModel
+                            item.IsEarlyOT = true;
+                            if (i.DateOut > s.Key.WorkFrom)
                             {
-                                Company = s.Key.Company,
-                                EmployeeId = s.Key.EmployeeId,
-                                Department = s.Key.Department,
-                                Name = s.Key.Name,
-                                ShiftCode = s.Key.ShiftCode,
-                                ShiftName = s.Key.ShiftName,
-                                ReportDate = s.Key.ReportDate,
-                                DateIn = s.Key.WorkFrom,
-                                DateOut = i.DateOut,
-                                WorkingTime = i.DateOut - s.Key.WorkFrom,
-                                NotWorkingTime = i.NotWorkingTime,
-                            });
+                                item.DateOut = s.Key.WorkFrom;
+                                item.WorkingTime = (item.DateOut - item.DateIn) ?? TimeSpan.Zero;
+                                itemsSource.Add(new ReportSourceModel
+                                {
+                                    Company = s.Key.Company,
+                                    EmployeeId = s.Key.EmployeeId,
+                                    Department = s.Key.Department,
+                                    Name = s.Key.Name,
+                                    ShiftCode = s.Key.ShiftCode,
+                                    ShiftName = s.Key.ShiftName,
+                                    ReportDate = s.Key.ReportDate,
+                                    DateIn = s.Key.WorkFrom,
+                                    DateOut = i.DateOut,
+                                    WorkingTime = (i.DateOut - s.Key.WorkFrom).GetValueOrDefault(),
+                                    NotWorkingTime = i.NotWorkingTime,
+                                });
+                            }
                         }
-                    }
 
-                    if (s.HasLatelyWork && i.DateOut > s.Key.WorkTo)
-                    {
-                        item.IsLateOT = true;
-                        if (i.DateIn < s.Key.WorkTo)
+                        if (s.HasLatelyWork && i.DateOut > s.Key.WorkTo)
                         {
-                            item.DateIn = s.Key.WorkTo;
-                            item.WorkingTime = (item.DateOut - item.DateIn) ?? TimeSpan.Zero;
-                            itemsSource.Add(new ReportSourceModel
+                            item.IsLateOT = true;
+                            if (i.DateIn < s.Key.WorkTo)
                             {
-                                Company = s.Key.Company,
-                                EmployeeId = s.Key.EmployeeId,
-                                Department = s.Key.Department,
-                                Name = s.Key.Name,
-                                ShiftCode = s.Key.ShiftCode,
-                                ShiftName = s.Key.ShiftName,
-                                ReportDate = s.Key.ReportDate,
-                                DateIn = i.DateIn,
-                                DateOut = s.Key.WorkTo,
-                                WorkingTime = s.Key.WorkTo - i.DateIn,
-                                NotWorkingTime = i.NotWorkingTime,
-                            });
+                                item.DateIn = s.Key.WorkTo;
+                                item.WorkingTime = (item.DateOut - item.DateIn) ?? TimeSpan.Zero;
+                                itemsSource.Add(new ReportSourceModel
+                                {
+                                    Company = s.Key.Company,
+                                    EmployeeId = s.Key.EmployeeId,
+                                    Department = s.Key.Department,
+                                    Name = s.Key.Name,
+                                    ShiftCode = s.Key.ShiftCode,
+                                    ShiftName = s.Key.ShiftName,
+                                    ReportDate = s.Key.ReportDate,
+                                    DateIn = i.DateIn,
+                                    DateOut = s.Key.WorkTo,
+                                    WorkingTime = (s.Key.WorkTo - i.DateIn).GetValueOrDefault(),
+                                    NotWorkingTime = i.NotWorkingTime,
+                                });
+                            }
                         }
                     }
 

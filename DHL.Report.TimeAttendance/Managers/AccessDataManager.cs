@@ -102,7 +102,7 @@ namespace DHL.Report.TimeAttendance.Managers
                         .Select(g => new
                         {
                             EmployeeId = g.Key,
-                            Items = g.SelectWithPrev((cur, prev, isfirst) => new 
+                            Items = g.SelectWithPrev((cur, prev, isfirst) => new
                             {
                                 EmployeeId = cur.EmployeeId,
                                 DateIn = cur.DateIn,
@@ -116,15 +116,16 @@ namespace DHL.Report.TimeAttendance.Managers
                             {
                                 EmployeeId = cur.EmployeeId,
                                 DateIn = cur.DateIn,
-                                DateOut = cur.DateOut,
-                                WorkingTime = cur.DateOut - cur.DateIn,
+                                DateOut = cur.WorkingTime.TotalHours > 16 ? (DateTime?)null : cur.DateOut,
+                                WorkingTime = cur.WorkingTime.TotalHours > 16 ? (TimeSpan?)null : cur.WorkingTime,
                                 NotWorkingTime = cur.NotWorkingTime,
                                 ReportDate = isfirst || cur.NotWorkingTime == TimeSpan.Zero ?
-                                    cur.ReportDate : prev.ReportDate
+                                    cur.ReportDate : prev.ReportDate,
+                                IsInvalid = cur.WorkingTime.TotalHours > 16,
                             })
                             .OrderBy(x => x.DateIn)
                         });
-
+                    
                     return employees
                         .SelectMany(x => x.Items.Where(r => r.ReportDate > dateFrom && r.ReportDate < dateTo))
                         .OrderBy(x => x.EmployeeId)
