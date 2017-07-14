@@ -107,6 +107,8 @@ namespace DHL.Report.Init
                 }
 
                 // execute command into access
+                int totalAffectRow = 0;
+                string errorRow = string.Empty;
                 string connectionString = $@"Provider=Microsoft.ACE.OLEDB.12.0; Data Source={accessFile};Persist Security Info=False; Jet OLEDB:Database Password={accessPassword};";
                 using (var connection = new OleDbConnection(connectionString))
                 {
@@ -116,23 +118,30 @@ namespace DHL.Report.Init
                         var queryString = @"
                         UPDATE t_b_consumer
                         SET f_ConsumerNO = @employee_no
-                        WHERE f_ConsumerNO = @scan_id";
+                        WHERE f_CardNo = @scan_id";
 
                         foreach (var item in excelItems)
                         {
-                            using (var command = new OleDbCommand(queryString, connection))
+                            try
                             {
-                                command.Parameters.Add(new OleDbParameter
+                                using (var command = new OleDbCommand(queryString, connection))
                                 {
-                                    ParameterName = "@employee_no",
-                                    Value = item.EmployeeNo,
-                                });
-                                command.Parameters.Add(new OleDbParameter
-                                {
-                                    ParameterName = "@scan_id",
-                                    Value = item.ScanId,
-                                });
-                                int affectRow = command.ExecuteNonQuery();
+                                    command.Parameters.Add(new OleDbParameter
+                                    {
+                                        ParameterName = "@employee_no",
+                                        Value = item.EmployeeNo,
+                                    });
+                                    command.Parameters.Add(new OleDbParameter
+                                    {
+                                        ParameterName = "@scan_id",
+                                        Value = item.ScanId,
+                                    });
+                                    totalAffectRow += command.ExecuteNonQuery();
+                                }
+                            }
+                            catch (Exception ex)
+                            {
+                                errorRow += $"{item.EmployeeNo} | {item.ScanId}" + Environment.NewLine;
                             }
                         }
                     }
@@ -146,7 +155,14 @@ namespace DHL.Report.Init
                     }
                 }
 
-                MessageBox.Show("ทำการ map เสร็จสิ้น");
+                string message = string.Format(@"ทำการ map เสร็จสิ้น
+สำเร็จทั้งหมด {0} row
+", totalAffectRow);
+                if (!string.IsNullOrEmpty(errorRow))
+                {
+                    message += "ข้อมูลที่ไม่สำเร็จ : " + Environment.NewLine + errorRow;
+                }
+                MessageBox.Show(message);
             }
             catch (Exception ex)
             {
